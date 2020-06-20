@@ -39,19 +39,25 @@ Associated with these 8 cube values are three tuples of values
 "cube equations":
 ....
     A1 = bc - ad
-    A2 = ce - ag
-    A3 = be - af
     B1 = -ah + bg + cf - de
-    B2 = -ah - bg + cf + de
-    B3 = -ah + bg - cf + de
     C1 = fg - eh
+
+    A2 = ce - ag
+    B2 = -ah - bg + cf + de
     C2 = df - bh
+
+    A3 = be - af
+    B3 = -ah + bg - cf + de
     C3 = dg - ch
 ....
 
-Given any cube values a,b,c,d,e,f,g,h, it is clear that the tuple values A1,A2,etc. are uniquely determined.
+Given any cube values a,b,c,d,e,f,g,h, it is clear that the tuple values
+A1,A2,etc. are uniquely determined.
 
-What is not obvious from this, is that given any tuple values (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), if there is a solution, the cube values a,b,c,d,e,f,g,h are uniquely deteremined up to an overall sign. (A sketch of a proof is provided in <<_useful_algebra_results>>.)
+What is not obvious from this, is that given any tuple values (A1,B1,C1),
+(A2,B2,C2), (A3,B3,C3), if there is a solution, the cube values
+a,b,c,d,e,f,g,h are uniquely deteremined up to an overall sign.
+(A sketch of a proof is provided in '<<useful-algebra-results>>'.)
 
 So up to an overall sign, a cube can be uniquely referred to by either the
 eight corner values or the three tuples.
@@ -72,7 +78,7 @@ by giving it an initial value and then repeated application of the function on
 its own output. So it is also advantageous to keep the size of the integers in
 your cube solution from getting larger each application.
 
-(As noted in the <<_Further_math_information>> section, technically the last
+(As noted in the '<<skim-some-deeper-math-details>>' section, technically the last
 equal sign may be relaxed to an equivalence (A2',B2',C2') ~ (A3,B3,C3),
 allowing more freedom in the solution if desired. Pursuing this is not strictly
 necessary.)
