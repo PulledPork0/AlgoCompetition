@@ -134,17 +134,19 @@ original constraints. For example it is clear setting all the cube values to
 zero would satisfy the linear equations, but not the original equations.
 
 So choosing some non-zero tuple value, the original quadratic equation
-can be used to constraint the final 2 freedoms (as a quadratic form equal to
-a constant). Therefore, giving a unique solution up to an overall sign.
+can be used to constrain the final 2 freedoms (this constraint looks like
+a quadratic form equal to a constant). Therefore this gives a unique solution
+up to an overall sign.
 
 
-# Deeper math details
+# Skim by some deeper math details
 
 ## Composition
 
 It can be proven that if given (A2,B2,C2) and (A3,B3,C3) such that
 * the values are relatively prime gcd(A2,B2,C2) = gcd(A3,B3,C3) = 1
 * and B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3
+
 then necessarily
 * there exists a solution to the cube equations
 * the solution is not unique, but are related in a simple way that will be explored shortly.
@@ -157,7 +159,8 @@ other tuples. Given a solution, we can also say (A2,-B2,C2) is a "composition"
 of the tuples (A1,B1,C1), (A3,B3,C3).  And (A3,-B3,C3) is a "composition" of
 the tuples (A1,B1,C1), (A2,B2,C2).
 
-In can be checked that for any solution,
+By expanding the tuple values in terms of the cube values, it can be checked
+that for any solution:
 ```
   B1^2 - 4 A1 C1 = B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3
 ```
@@ -190,7 +193,7 @@ composition of T2 and T4.
 
 We can rewrite this more cleanly if we define "*" between tuples to mean
 composition, so that (tuple1 * tuple2) as an operation results in some tuple
-such that is the composition of tuple1 and tuple2. The previous result can
+such that it is the composition of tuple1 and tuple2. The previous result can
 then be written:
 ```
     if  T1 ~ T2  and  T3 ~ T4,  then  (T1 * T3) ~ (T2 * T4)
@@ -200,8 +203,8 @@ then be written:
 
 It turns out that this operation has nice properties.
 
-* commutative: (T1 * T2) = (T2 * T1)
-* associative: (T1 * (T2 * T3)) = ((T1 * T2) * T3)
+* commutative: (T1 * T2) ~ (T2 * T1)
+* associative: (T1 * (T2 * T3)) ~ ((T1 * T2) * T3)
 
 Reminding that we are restricting to considering the set of tuples with a
 particular discriminant, we can further say
@@ -217,6 +220,7 @@ forms T2, (T_identity * T2) ~ T2.
 
 Now consider two cubes given by the tuples T1a,T1b,T1c and T2a,T2b,T2c
 respectively. Then we have:
+
 ```
 cube1: T1a ~ T1b * T1c
 cube2: T2a ~ T2b * T2c
@@ -227,6 +231,7 @@ then there exist tuples given by
  T3c ~ T1c * T2c
 and therefore
  T3a ~ T3b * T3c
+```
 
 and so composition of tuples, along with existence of a cube for any
 three tuples that satisfy a composition relation, means that given two
@@ -350,13 +355,12 @@ done which only change Tuple2 or only change Tuple1.
   * wikipedia: Extended Euclidean algorithm, [link](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)
   * wikipedia: Bezout's identity, [link](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
   * textbook style discussion of solutions, [link](http://gauss.math.luc.edu/greicius/Math201/Fall2012/Lectures/linear-diophantine.article.pdf)
-*  binary quadratic forms
-  *  wikipedia: binary quadratic forms, [link](https://en.wikipedia.org/wiki/Binary_quadratic_form)
-  *  introduction by Lipa Long from Chia Networks, [link](https://github.com/Chia-Network/vdf-competition/blob/master/classgroups.pdf)
+* binary quadratic forms
+  * wikipedia: binary quadratic forms, [link](https://en.wikipedia.org/wiki/Binary_quadratic_form)
+  * introduction by Lipa Long from Chia Network, [link](https://github.com/Chia-Network/vdf-competition/blob/master/classgroups.pdf)
 * Bhargava cubes
-  *  wikipedia: Bhargava cubes, [link](https://en.wikipedia.org/wiki/Bhargava_cube)
-  *  original article (math jargon heavy) by Bhargava, "Higher composition laws I:
-A new view on Gauss composition, and quadratic generalizations", [pdf](https://annals.math.princeton.edu/wp-content/uploads/annals-v159-n1-p03.pdf)
+  * wikipedia: Bhargava cubes, [link](https://en.wikipedia.org/wiki/Bhargava_cube)
+  * original article (math jargon heavy) by Bhargava, "Higher composition laws I: A new view on Gauss composition, and quadratic generalizations", [pdf](https://annals.math.princeton.edu/wp-content/uploads/annals-v159-n1-p03.pdf)
 
 
 # Acknowledgements
