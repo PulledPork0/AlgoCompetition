@@ -1,0 +1,5 @@
+bitsize:16 rstep:2 ntest:2
+SomeSeed
+2
+-288359 256 -59 285
+-76919 110 31 177
