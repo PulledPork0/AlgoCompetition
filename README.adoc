@@ -1,15 +1,19 @@
-# Algorithm Competition
 
-A particular operation on eight integers which returns a new set of eight
-integers is defined below. The goal is to write an algorithm that implements
+:toc:
+:toc-placement!:
+
+This algorithm competition involves writing an algorithm for an operation on
+eight integers which is defined below and returns a new set of eight
+integers. The goal is to write an algorithm that implements
 this operation with as small a computational cost as possible.
 
 A python utility is supplied which allows one to write their algorithm in
 python and easily check its correctness as well as have its computational cost
 calculated with some chosen inputs.
 
+toc::[]
 
-# The math puzzle
+= The main puzzle
 
 This problem can be approached with basic algebra skills supplemented with
 knowledge of how to solve linear equations involving integers.
@@ -17,10 +21,9 @@ knowledge of how to solve linear equations involving integers.
 What follows is an algebra description of the problem, which skips the deeper
 math. For those wanting to explore the details themselves, there is a reference section at the end with links to some helpful material.
 
-```
 Consider a cube with integers on each corner,
 and the values labelled a,b,c,d,e,f,g,h.
-
+....
        e ---- f
       /|     /|
      / |    / |
@@ -29,12 +32,12 @@ and the values labelled a,b,c,d,e,f,g,h.
     | /    | /
     |/     |/
     c ---- d
-
+....
 
 Associated with these 8 cube values are three tuples of values
 (A1,B1,C1), (A2,B2,C2), (A3,B3,C3). Given by what will be referred to as the
 "cube equations":
-
+....
     A1 = bc - ad
     A2 = ce - ag
     A3 = be - af
@@ -44,22 +47,23 @@ Associated with these 8 cube values are three tuples of values
     C1 = fg - eh
     C2 = df - bh
     C3 = dg - ch
-```
+....
 
 Given any cube values a,b,c,d,e,f,g,h, it is clear that the tuple values A1,A2,etc. are uniquely determined.
 
-What is not obvious from this, is that given any tuple values (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), if there is a solution, it is unique up to an overall sign on the values a,b,c,d,e,f,g,h.
+What is not obvious from this, is that given any tuple values (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), if there is a solution, the cube values a,b,c,d,e,f,g,h are uniquely deteremined up to an overall sign.
 
 So up to an overall sign, a cube can be uniquely referred to by either the
 eight corner values or the three tuples.
 
-## Function to create
+== Algorithm to create
 
-In the competition, your function will be given (a,b,c,d,e,f,g,h)
-specifying a cube, with the guarantee that the first two tuples are equal
-(A1,B1,C1) = (A2,B2,C2).
+In the competition, the goal is to write a function which will take as
+input (a,b,c,d,e,f,g,h) specifying a cube, with the additional guarantee that
+the first two tuples are equal (A1,B1,C1) = (A2,B2,C2).
 
-The goal is to calculate a new cube such that
+The function must then calculate and return new cube values
+(a',b',c',d',e',f',g',h') such that
 ```
    (A1',B1',C1') = (A2',B2',C2') = (A3,B3,C3)
 ```
@@ -73,11 +77,11 @@ may be relaxed to an equivalence (A2',B2',C2') ~ (A3,B3,C3), allowing more
 freedom in the solution if desired. Pursuing this is not strictly necessary.)
 
 
-# Useful algebra
+= Useful algebra
 
-Starting with the original 9 equations, for some purposes it is convenient to
-expand them into the following 12 equations.
-```
+Starting with the original 9 cube equations, for some purposes it is
+convenient to expand them into the following 12 equations.
+....
   bc - ad = A1
   ce - ag = A2
   be - af = A3
@@ -90,10 +94,11 @@ expand them into the following 12 equations.
   fg - eh = C1
   df - bh = C2
   dg - ch = C3
-```
+....
 
-These can then be manipulated to form more linear looking relationships that must hold for any cube solution.
-```
+These can then be manipulated to form more linear looking relationships that
+must hold for any cube solution.
+....
   a C3 + g A1 = c (B1 + B3)/2
   a C1 + g A3 = e (B1 + B3)/2
   b C3 + h A1 = d (B1 + B3)/2
@@ -123,7 +128,7 @@ These can then be manipulated to form more linear looking relationships that mus
   a C3 + d A2 = c (B3 + B2)/2
   h A3 + e C2 = f (B3 + B2)/2
   e C3 + h A2 = g (B3 + B2)/2
-```
+....
 
 If given all the tuple values, this is now a system of linear equations for the
 cube values. Of the 24 linear equations, only 6 are linearly independent, so
@@ -139,15 +144,17 @@ a quadratic form equal to a constant). Therefore this gives a unique solution
 up to an overall sign.
 
 
-# Skim by some deeper math details
+= Skim some deeper math details
 
-## Composition
+== Composition
 
 It can be proven that if given (A2,B2,C2) and (A3,B3,C3) such that
+
 * the values are relatively prime gcd(A2,B2,C2) = gcd(A3,B3,C3) = 1
 * and B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3
 
 then necessarily
+
 * there exists a solution to the cube equations
 * the solution is not unique, but are related in a simple way that will be explored shortly.
 
@@ -161,9 +168,9 @@ the tuples (A1,B1,C1), (A2,B2,C2).
 
 By expanding the tuple values in terms of the cube values, it can be checked
 that for any solution:
-```
+....
   B1^2 - 4 A1 C1 = B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3
-```
+....
 This value is called the discriminant. As mentioned above, this value is
 important for the existence of solutions given just two tuples. So in what
 follows, let's restrict consideration of tuples to those of some given
@@ -176,7 +183,7 @@ With this restriction going forward, for any two tuples under consideration
 there will always exist a third which is a composition of those two tuples.
 
 
-## Equivalence
+== Equivalence
 
 Define two tuples (A,B,C) and (A',B',C') to be "equivalent" if there exists two
 other tuples T1 and T2 such that (A,B,C) is a composition of T1
@@ -184,7 +191,7 @@ and T1, and (A',B',C') is also a composition of T1 and T2. We will
 denote that two tuples are equivalent by writing tuple1 ~ tuple2.
 
 
-## Composition respects equivalence
+== Composition respects equivalence
 
 The composition property respects the equivalence relation in the following
 way. If T1 ~ T2 and T3 ~ T4, then any tuple which is a
@@ -195,16 +202,16 @@ We can rewrite this more cleanly if we define "*" between tuples to mean
 composition, so that (tuple1 * tuple2) as an operation results in some tuple
 such that it is the composition of tuple1 and tuple2. The previous result can
 then be written:
-```
+....
     if  T1 ~ T2  and  T3 ~ T4,  then  (T1 * T3) ~ (T2 * T4)
-```
+....
 
-## Further properties of composition
+== Further properties of composition
 
 It turns out that this operation has nice properties.
 
-* commutative: (T1 * T2) ~ (T2 * T1)
-* associative: (T1 * (T2 * T3)) ~ ((T1 * T2) * T3)
+* commutative: `(T1 * T2) ~ (T2 * T1)`
+* associative: `(T1 * (T2 * T3)) ~ ((T1 * T2) * T3)`
 
 Reminding that we are restricting to considering the set of tuples with a
 particular discriminant, we can further say
@@ -216,12 +223,12 @@ forms T2, (T_identity * T2) ~ T2.
 (T1 * T2) ~ T_identity.
 
 
-## composition of cubes
+== composition of cubes
 
 Now consider two cubes given by the tuples T1a,T1b,T1c and T2a,T2b,T2c
 respectively. Then we have:
 
-```
+....
 cube1: T1a ~ T1b * T1c
 cube2: T2a ~ T2b * T2c
 
@@ -231,7 +238,7 @@ then there exist tuples given by
  T3c ~ T1c * T2c
 and therefore
  T3a ~ T3b * T3c
-```
+....
 
 and so composition of tuples, along with existence of a cube for any
 three tuples that satisfy a composition relation, means that given two
@@ -240,7 +247,7 @@ cubes a third exists which is a "composition" of two other cubes.
 It is this cube composition which the algorithm contest involves.
 
 
-## Function to create, viewed as composition of cubes
+== Function to create, viewed as composition of cubes
 
 In the competition, your function will be given (a,b,c,d,e,f,g,h)
 specifying a cube, with the guarantee that the first two tuples are equal
@@ -251,26 +258,26 @@ Using cube composition, a new cube must be calculated such that
 * the new cube also has the first two tuples equal (A1',B1',C1')=(A2',B2',C2')
 
 Note:
-```
+....
 (A3,B3,C3) ~ (A1,B1,C1) * (A2,B2,C2) ~ (A1,B1,C1) * (A1,B1,C1) ~ (A1',B1',C1')
-```
+....
 
 
-# Properties of solutions to the cube equations
+= Properties of solutions to the cube equations
 
 The cube equations have some interesting properties.
 
-## New solution with overall sign flip
+== New solution with overall sign flip
 
 Since all the tuple values A1,A2,etc. are a bilinear combination of the 8 cube
 values, if we invert all the cube values, this does not change the tuple values.
 
-## Preserving Tuple1,Tuple2 and changing Tuple3
+== Preserving Tuple1,Tuple2 and changing Tuple3
 
 Given a cube, there are some simple transformations we can do to the values
 which preserves two of the three tuples, and changes the third in a simple way.
 
-```
+....
 swap the values according to
     (a',b',c',d', e',f',g',h') = (c,d,-a,-b, g,h,-e,-f)
 
@@ -283,11 +290,11 @@ it is found that
     A1',B1',C1' = A1,B1,C1
     A2',B2',C2' = A2,B2,C2
     A3',B3',C3' = C3,-B3,A3
-```
+....
 
 another operation preserving Tuple1,Tuple2 and changing Tuple3 is
 
-```
+....
 given any integer n
     (a',b',c',d', e',f',g',h') = (a,b,c+an,d+bn, e,f,g+en,h+fn)
 
@@ -302,12 +309,12 @@ it is found that
     A1',B1',C1' = A1,B1,C1
     A2',B2',C2' = A2,B2,C2
     A3',B3',C3' = A3, B3 + 2n A3, C3 + n B3 + n^2 A3
-```
+....
 
 The previous two manipulations can be rephrased nicely in the language
 of linear algebra
 
-```
+....
 first
     |a' b' e' f'| = | 0 1| |a b e f|
     |c' d' g' h'|   |-1 0| |c d g h|
@@ -316,19 +323,17 @@ first
     |B3'/2  C3' |   |-1 0| |B3/2  C3 | |1  0|
 
 
-seond
+second
     |a' b' e' f'| = |1 0| |a b e f|
     |c' d' g' h'|   |n 1| |c d g h|
 
     | A3'  B3'/2| = |1 0| | A3  B3/2| |1 n|
     |B3'/2  C3' |   |n 1| |B3/2  C3 | |0 1|
+....
 
-```
+These two manipulations can combined, and repeated.
 
-These two manipulations can combined.
-
-
-```
+....
 general case
 modify with any matrix such that ru - st = 1
     |a' b' e' f'| = |r s| |a b e f|
@@ -336,20 +341,19 @@ modify with any matrix such that ru - st = 1
 
     | A3'  B3'/2| = |r s| | A3  B3/2| |r t|
     |B3'/2  C3' |   |t u| |B3/2  C3 | |s u|
-
-```
+....
 
 This freedom in the tuple is precisely the freedom in the
 equivalance relation mentioned above.
 
 
-## Preserving Tuple1,Tuple3 or Tuple2,Tuple3
+== Preserving Tuple1,Tuple3 or Tuple2,Tuple3
 
 By symmetry of the cube and equations, similar manipulations can be
 done which only change Tuple2 or only change Tuple1.
 
 
-# Reference
+= Reference
 
 * solving linear integer equations, ax + by = c
   * wikipedia: Extended Euclidean algorithm, [link](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)
@@ -363,7 +367,7 @@ done which only change Tuple2 or only change Tuple1.
   * original article (math jargon heavy) by Bhargava, "Higher composition laws I: A new view on Gauss composition, and quadratic generalizations", [pdf](https://annals.math.princeton.edu/wp-content/uploads/annals-v159-n1-p03.pdf)
 
 
-# Acknowledgements
+= Acknowledgements
 
 inkfish from https://github.com/Chia-Network/vdf-competition.git
 
