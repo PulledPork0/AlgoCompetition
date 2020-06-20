@@ -35,7 +35,7 @@ and the values labelled a,b,c,d,e,f,g,h.
 ....
 
 Associated with these 8 cube values are three tuples of values
-(A1,B1,C1), (A2,B2,C2), (A3,B3,C3). Given by what will be referred to as the
+(A1,B1,C1), (A2,B2,C2), (A3,B3,C3), given by what will be referred to as the
 "cube equations":
 ....
     A1 = bc - ad
@@ -51,7 +51,7 @@ Associated with these 8 cube values are three tuples of values
 
 Given any cube values a,b,c,d,e,f,g,h, it is clear that the tuple values A1,A2,etc. are uniquely determined.
 
-What is not obvious from this, is that given any tuple values (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), if there is a solution, the cube values a,b,c,d,e,f,g,h are uniquely deteremined up to an overall sign.
+What is not obvious from this, is that given any tuple values (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), if there is a solution, the cube values a,b,c,d,e,f,g,h are uniquely deteremined up to an overall sign. (A sketch of a proof is provided in <<_useful_algebra_results>>.)
 
 So up to an overall sign, a cube can be uniquely referred to by either the
 eight corner values or the three tuples.
@@ -72,12 +72,13 @@ by giving it an initial value and then repeated application of the function on
 its own output. So it is also advantageous to keep the size of the integers in
 your cube solution from getting larger each application.
 
-(As noted in the 'Further math information', technically the last equal sign
-may be relaxed to an equivalence (A2',B2',C2') ~ (A3,B3,C3), allowing more
-freedom in the solution if desired. Pursuing this is not strictly necessary.)
+(As noted in the <<_Further_math_information>> section, technically the last
+equal sign may be relaxed to an equivalence (A2',B2',C2') ~ (A3,B3,C3),
+allowing more freedom in the solution if desired. Pursuing this is not strictly
+necessary.)
 
 
-= Useful algebra
+= Useful algebra results
 
 Starting with the original 9 cube equations, for some purposes it is
 convenient to expand them into the following 12 equations.
@@ -150,8 +151,8 @@ up to an overall sign.
 
 It can be proven that if given (A2,B2,C2) and (A3,B3,C3) such that
 
-* the values are relatively prime gcd(A2,B2,C2) = gcd(A3,B3,C3) = 1
-* and B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3
+* the values are relatively prime `gcd(A2,B2,C2) = gcd(A3,B3,C3) = 1`
+* and `B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3`
 
 then necessarily
 
@@ -356,15 +357,15 @@ done which only change Tuple2 or only change Tuple1.
 = Reference
 
 * solving linear integer equations, ax + by = c
-  * wikipedia: Extended Euclidean algorithm, [link](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)
-  * wikipedia: Bezout's identity, [link](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
-  * textbook style discussion of solutions, [link](http://gauss.math.luc.edu/greicius/Math201/Fall2012/Lectures/linear-diophantine.article.pdf)
+** wikipedia: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm[Extended Euclidean algorithm]
+** wikipedia: https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity[Bezout's identity]
+** textbook style discussion of solutions, http://gauss.math.luc.edu/greicius/Math201/Fall2012/Lectures/linear-diophantine.article.pdf[pdf]
 * binary quadratic forms
-  * wikipedia: binary quadratic forms, [link](https://en.wikipedia.org/wiki/Binary_quadratic_form)
-  * introduction by Lipa Long from Chia Network, [link](https://github.com/Chia-Network/vdf-competition/blob/master/classgroups.pdf)
+** wikipedia: https://en.wikipedia.org/wiki/Binary_quadratic_form[binary quadratic forms]
+** introduction by Lipa Long from Chia Network, https://github.com/Chia-Network/vdf-competition/blob/master/classgroups.pdf[classgroups.pdf]
 * Bhargava cubes
-  * wikipedia: Bhargava cubes, [link](https://en.wikipedia.org/wiki/Bhargava_cube)
-  * original article (math jargon heavy) by Bhargava, "Higher composition laws I: A new view on Gauss composition, and quadratic generalizations", [pdf](https://annals.math.princeton.edu/wp-content/uploads/annals-v159-n1-p03.pdf)
+** wikipedia: https://en.wikipedia.org/wiki/Bhargava_cube[Bhargava cubes]
+** original article (math jargon heavy) by Bhargava, _"Higher composition laws I: A new view on Gauss composition, and quadratic generalizations"_, https://annals.math.princeton.edu/wp-content/uploads/annals-v159-n1-p03.pdf[pdf]
 
 
 = Acknowledgements
