@@ -27,10 +27,12 @@ class CostTracking:
         return diff
 
     def summary(self):
-        return ("total cost:{}\n"
-                "operation counts: add:{}, sub:{}, mul:{}, div:{}, gcd:{}\n"
-                "operation costs: add:{}, sub:{}, mul:{}, div:{}, gcd:{}\n"
-                "".format(self.cost,
+        return ("total cost: {} ({:.2e})\n"
+                "operation counts:\n   "
+                " add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}, gcd:{:.2e}\n"
+                "operation costs:\n   "
+                " add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}, gcd:{:.2e}\n"
+                "".format(self.cost, self.cost,
                     self.num_add, self.num_sub, self.num_mul, self.num_div,
                         self.num_gcd,
                     self.cost_add, self.cost_sub, self.cost_mul, self.cost_div,
