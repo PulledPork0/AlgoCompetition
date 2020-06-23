@@ -1,4 +1,5 @@
 
+from .isqrt import isqrt
 from .gcd import (xgcd, gcd, mod_inverse, partial_reduce)
 from .solve_linear import solve_linear
 
