@@ -7,11 +7,47 @@ def xgcd(a, b):
     """return (g, x, y) such that a*x + b*y = g = gcd(a, b)"""
     tracking = gcd_tracking_start(a, b)
 
+    """
+    Extended Euclicean algorithm:
+
+    let a0, b0 be the original values of a,b
+
+    at the start of each loop we have
+        x0 a0 + y0 b0 = b
+        x1 a0 + y1 b0 = a
+
+    then find q=b//a, r=b%a so that
+        b = q a + r
+
+    therefore we can get a new equation
+              x0 a0 + y0 b0 = b
+        - q ( x1 a0 + y1 b0 = a )
+        --------------------------
+        (x0 - q x1) a0 + (y0 - q y1) b0 = b - qa = r
+
+    using this, new constants can be chosen for the next iteration
+        x0' a0 + y0' b0 = b'   <---->   x1 a0 + y1 b0 = a
+        x1' a0 + y1' b0 = a'   <---->   (x0 - q x1) a0 + (y0 - q y1) b0 = r
+
+    as r < |a| and r <= |b|, each iteration reduces a,
+    and must eventually converge on a=0.
+    This means we have:
+        x0 a0 + y0 b0 = b
+        x1 a0 + y1 b0 = 0
+    The gcd(b,0) = |b|, so we cannot reduce further.
+    And due to construction gcd(x0,y0)=1, so we have
+        x0 a0 + y0 b0 = b = +/-gcd(a0,b0)
+    So if b is negative, flip the signs of b,x0,y0.
+
+    Return (b,x0,y0) which relate by: x0 a0 + y0 b0 = b = gcd(a0,b0).
+    """
+
     x0, x1, y0, y1 = 0, 1, 1, 0
     while a != 0:
-        q, b, a = b // a, a, b % a
+        q, r = divmod(b, a)
         y0, y1 = y1, y0 - q * y1
         x0, x1 = x1, x0 - q * x1
+        b, a = a, r
 
     gcd_tracking_stop(tracking)
 
