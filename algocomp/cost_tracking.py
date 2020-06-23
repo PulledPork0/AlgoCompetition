@@ -1,5 +1,5 @@
 
-from .tracked_number import TrackedNumber
+from .tracked_number import (coerce_int, TrackedNumber)
 from math import log
 
 class CostTracking:
@@ -99,7 +99,7 @@ def gcd_tracking_start(a, b):
         ct = b.costTracking
     else:
         return (None, 0)
-    ct.gcd_start(int(a), int(b))
+    ct.gcd_start(coerce_int(a), coerce_int(b))
     return (ct, ct.cost)
 
 def gcd_tracking_stop(tracking):

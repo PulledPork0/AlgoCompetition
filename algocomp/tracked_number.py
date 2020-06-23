@@ -1,4 +1,16 @@
 
+from .ipow import ipow
+
+
+def coerce_int(x):
+    if isinstance(x, TrackedNumber):
+        return x.value
+    if isinstance(x, int):
+        return x
+    raise TypeError("Got type {}, expected TrackedNumber or int"
+                    "".format(x.__class__.__name__))
+
+
 class TrackedNumber:
     def __init__(self, costTracking, value=0):
         if not isinstance(value, int):
@@ -15,20 +27,22 @@ class TrackedNumber:
         if isinstance(x, TrackedNumber):
             if self.costTracking != x.costTracking:
                 raise ValueError("values have mismatched cost tracking")
-            return x.value
-        if isinstance(x, int):
-            return x
-        raise TypeError("Got type {}, expected TrackedNumber or int"
-                        "".format(x.__class__.__name__))
+        return coerce_int(x)
+
 
     def __str__(self):
         return str(self.value)
 
+    def __repr__(self):
+        return "TrackedNumber(value={})".format(self.value)
+
 
     # unary operations
 
-    def __int__(self):
-        return self.value
+    # -- this can unintentially allow removing tracking,
+    #    explicitly use .value instead
+    #def __int__(self):
+    #    return self.value
 
     def __bool__(self):
         return self.value != 0
@@ -46,22 +60,22 @@ class TrackedNumber:
     # comparisons
 
     def __eq__(self, other):
-        return self.value == int(other)
+        return self.value == coerce_int(other)
 
     def __ge__(self, other):
-        return self.value >= int(other)
+        return self.value >= coerce_int(other)
 
     def __gt__(self, other):
-        return self.value > int(other)
+        return self.value > coerce_int(other)
 
     def __le__(self, other):
-        return self.value <= int(other)
+        return self.value <= coerce_int(other)
     
     def __lt__(self, other):
-        return self.value < int(other)
+        return self.value < coerce_int(other)
 
     def __ne__(self, other):
-        return self.value != int(other)
+        return self.value != coerce_int(other)
 
 
     # basic arithmetic
@@ -144,4 +158,14 @@ class TrackedNumber:
         self.costTracking.div(x,y)
         return (TrackedNumber(self.costTracking, x//y),
                 TrackedNumber(self.costTracking, x%y))
+
+    # exponentiation
+    #   included for completeness, but probably only need square
+    #   which would be simpler to just write as x*x
+
+    def __pow__(self, other):
+        return ipow(self, other)
+
+    def __rpow__(self, other):
+        return ipow(other, self)
 

@@ -2,6 +2,7 @@
 
 from inkfish.classgroup import ClassGroup
 from algocomp import *
+from algocomp.tracked_number import coerce_int as _int
 import importlib
 import sys
 import argparse
@@ -40,12 +41,17 @@ if __name__ == '__main__':
             ntest += 1
             disc, A, B, C = [int(s) for s in line.strip().split(' ')]
 
-            cube = get_initial_cube(disc, costTracking)
+            if getattr(m, "initial_cube", None):
+                cube = m.initial_cube(costTracking.NewNumber(disc))
+            else:
+                cube = default_initial_cube(costTracking.NewNumber(disc))
+
             for _ in range(rsteps):
                 cube = m.run(*cube)
             test_cost = costTracking.last()
 
-            a, b, c, d, e, f, g, h = [int(x) for x in cube]
+            # coerce to int, so checks do not count in cost
+            a, b, c, d, e, f, g, h = [_int(x) for x in cube]
             A3 = b*e - a*f
             B3 = -a*h + b*g - c*f + d*e
             C3 = d*g - c*h

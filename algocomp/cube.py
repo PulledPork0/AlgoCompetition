@@ -1,9 +1,14 @@
 
+from .tracked_number import coerce_int
 from .solve_linear import *
+
 
 def print_cube_stats(cube):
     """for debugging: given a cube as a tuple of 8 values, print some stats"""
-    a,b,c,d,e,f,g,h = [int(x) for x in cube]
+
+    # extract ints, so none of this gets counted in cost
+    a,b,c,d,e,f,g,h = [coerce_int(x) for x in cube]
+
     print('-'*40)
     print('a={} b={} c={} d={} e={} f={} g={} h={}'.format(a,b,c,d,e,f,g,h))
     A1 = (b*c - a*d)
@@ -26,16 +31,16 @@ def print_cube_stats(cube):
 
 def get_cube_with_squared_form(A, B, C):
     """
-    Assumes we are working with a prime discriminant, so gcd(A,B)=gcd(C,B)=1
+    Assumes we are working with a prime discriminant, so gcd(A,B)=gcd(C,B)=1.
 
     Sets up the faces of the cube like so:
     |a b| = |-1 b|    |e f| = |b f|
     |c d|   | 0 A| ,  |g h|   |A B|
 
     This garauntees A1=A2=A, B1=B2=B, so only need to constrain C1
-    which then sets the discriminant and so the first two forms = (A,B,C)
+    which then sets the discriminant and so the first two forms = (A,B,C).
 
-    Af - Bb = C ... solvable since gcd(A,B)=1
+    C1 = fg - eh = fA - bB = C ... solvable for f,b since gcd(A,B)=1
     """
 
     a = -1
@@ -50,10 +55,7 @@ def get_cube_with_squared_form(A, B, C):
     return (a,b,c,d,e,f,g,h)
 
 
-def get_initial_cube(disc, costTracking=None):
+def default_initial_cube(disc):
     cube = get_cube_with_squared_form(2, 1, (1-disc)//8)
-    if costTracking:
-        cube = tuple(costTracking.NewNumber(int(x)) for x in cube)
     return cube
-
 

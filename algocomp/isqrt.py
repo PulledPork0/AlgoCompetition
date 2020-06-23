@@ -1,5 +1,5 @@
 
-from .tracked_number import TrackedNumber
+from .tracked_number import (coerce_int, TrackedNumber)
 
 
 def isqrt(n):
@@ -25,7 +25,7 @@ def isqrt(n):
     """
     if n == 0:
         return 0
-    a, b = divmod(int(n).bit_length(), 2)
+    a, b = divmod(coerce_int(n).bit_length(), 2)
     x = 2**(a+b)
     if isinstance(n, TrackedNumber):
         # return to cost tracking

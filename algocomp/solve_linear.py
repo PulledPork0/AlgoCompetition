@@ -1,4 +1,5 @@
 
+from .tracked_number import coerce_int as _int
 from .gcd import xgcd
 
 
@@ -16,13 +17,13 @@ def solve_linear(a,b,c):
         if b==0:
             assert c==0
             return (0,0)
-        assert (int(c) % int(b))==0   # use int to bypass cost for assert
+        assert (_int(c) % _int(b))==0   # use _int to bypass cost for assert
         x = 0
         y = c//b
         return (x,y)
 
     if b==0:
-        assert (int(c) % int(a))==0   # use int to bypass cost for assert
+        assert (_int(c) % _int(a))==0   # use _int to bypass cost for assert
         x = c//a
         y = 0
         return (x,y)
@@ -39,7 +40,7 @@ def solve_linear(a,b,c):
             return (c//a, 0)
 
     g,x,y = xgcd(a,b)
-    assert (int(c) % int(g))==0     # use in to bypass cost for assert
+    assert (_int(c) % _int(g))==0     # use _int to bypass cost for assert
 
     # Is there a more direct way to get the "minimal" solution?
     # this creates a large answer, and then reduces it
