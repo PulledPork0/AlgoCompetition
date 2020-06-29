@@ -109,7 +109,7 @@ def mod_inverse(x, M):
 def partial_xgcd(a, b, L):
     """
     return (u,x,v,y) such that
-      1) u x - v y = a
+      1) u x - v y = a,   with |v| <= L  or  u = 0
       2) gcd(u,v) = gcd(a,b)
       3) gcd(x,y) = 1
 
