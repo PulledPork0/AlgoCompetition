@@ -1,7 +1,7 @@
 
 from .isqrt import isqrt
 from .ipow import ipow
-from .gcd import (xgcd, gcd, mod_inverse, partial_reduce)
+from .gcd import (xgcd, gcd, mod_inverse, partial_xgcd)
 from .solve_linear import solve_linear
 
 from .cost_tracking import (CostTracking, gcd_tracking_start, gcd_tracking_stop)
