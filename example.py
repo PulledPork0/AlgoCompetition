@@ -1,5 +1,4 @@
 
-from inkfish.classgroup import ClassGroup
 from algocomp import *
 
 def run(a,b,c,d,e,f,g,h):
@@ -14,8 +13,7 @@ def run(a,b,c,d,e,f,g,h):
     B3 = -a*h + b*g - c*f + d*e
     C3 = d*g - c*h
 
-    form = ClassGroup(A3, B3, C3)
-    A, B, C = form.reduced()
+    A, B, C = reduce_form(A3, B3, C3)
     
     """
     Assumes we are working with a prime discriminant, so gcd(A,B)=gcd(C,B)=1
@@ -44,8 +42,7 @@ def run(a,b,c,d,e,f,g,h):
         outA3 = b*e - a*f
         outB3 = -a*h + b*g - c*f + d*e
         outC3 = d*g - c*h
-        form = ClassGroup(outA3, outB3, outC3)
-        outA, outB, outC = form.reduced()
+        outA, outB, outC = reduce_form(outA3, outB3, outC3)
         print("in:({},{},{}) reduced:({},{},{}) --> "
               "out:({},{},{}) reduced:({},{},{})".format(
               A3,B3,C3, A,B,C, outA3,outB3,outC3, outA,outB,outC))
