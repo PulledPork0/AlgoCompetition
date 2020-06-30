@@ -38,14 +38,17 @@ class CostTracking:
               "    add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}\n".format(
                 self.cost_add, self.cost_sub, self.cost_mul, self.cost_div))
         if len(self.num_routine):
-            details = []
-            for name,val in self.num_routine.items():
-                details.append("{}:{:.2e}".format(name,val))
-            s += "routine counts:\n    {}\n".format(",".join(details))
-            details = []
-            for name,val in self.cost_routine.items():
-                details.append("{}:{:.2e}".format(name,val))
-            s += "routine costs:\n    {}\n".format(",".join(details))
+            algo_names = [name for name in self.num_routine]
+            algo_names.sort()
+            count_details = []
+            cost_details = []
+            for name in algo_names:
+                count = self.num_routine[name]
+                cost = self.cost_routine[name]
+                count_details.append("{}:{:.2e}".format(name, count))
+                cost_details.append("{}:{:.2e}".format(name, cost))
+            s += "routine counts:\n    {}\n".format(", ".join(count_details))
+            s += "routine costs:\n    {}\n".format(", ".join(cost_details))
         return s
 
 
