@@ -1,15 +1,19 @@
 
 from .gcd import xgcd
 from .isqrt import isqrt
+from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
 
 
 def reduce_form(a,b,c):
     """calculates reduced binary quadratic form"""
-    # normalize form
+    # -- normalize form --
     if c<a:
         a, b, c = c, -b, a
     if -a < b <= a:
         return (a,b,c)
+
+    tracking = routine_tracking_start("reduce_form", a, b, c)
+
     n = (b + a) // (2*a)
     # transform:  a, b, c = a, b - 2*a*n, c - b*n + a*n*n
     an = a*n
@@ -17,7 +21,7 @@ def reduce_form(a,b,c):
     c = c - n*b
     b = b - an
 
-    # reduce
+    # -- reduce --
     while a > c or (a == c and b < 0):
         # effictively:
         #   a, b, c = c, -b, a
@@ -27,6 +31,8 @@ def reduce_form(a,b,c):
         b = b - nc
         a, c = c, a - n*b
         b = nc - b
+
+    routine_tracking_stop(tracking)
 
     return (a,b,c)
 
