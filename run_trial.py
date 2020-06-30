@@ -42,12 +42,12 @@ if __name__ == '__main__':
             disc, A, B, C = [int(s) for s in line.strip().split(' ')]
 
             if getattr(m, "initial_cube", None):
-                cube = m.initial_cube(costTracking.NewNumber(disc))
+                cube, info = m.initial_cube(costTracking.NewNumber(disc))
             else:
-                cube = default_initial_cube(costTracking.NewNumber(disc))
+                cube, info = default_initial_cube(costTracking.NewNumber(disc))
 
             for _ in range(rsteps):
-                cube = m.run(*cube)
+                cube = m.run(cube, info)
             test_cost = costTracking.last()
 
             # coerce to int, so checks do not count in cost
@@ -74,6 +74,6 @@ if __name__ == '__main__':
                           "".format(ntest, test_cost))
                     npass += 1
             costTracking.last()
-    print("passed {} of {} tests".format(npass,ntest))
+    print("passed {} of {} tests\n".format(npass, ntest))
     print(costTracking.summary())
 

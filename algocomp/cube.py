@@ -56,6 +56,7 @@ def get_cube_with_squared_form(A, B, C):
 
 
 def default_initial_cube(disc):
+    """return (cube, extra_info)"""
     cube = get_cube_with_squared_form(2, 1, (1-disc)//8)
-    return cube
+    return (cube, None)
 
