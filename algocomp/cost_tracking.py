@@ -30,7 +30,8 @@ class CostTracking:
         return diff
 
     def summary(self):
-        s  =  "total cost: {} ({:.2e})\n".format(self.cost, self.cost)
+        total = float(self.cost)
+        s  =  "total cost: {} ({:.2e})\n".format(self.cost, total)
         s += ("basic operation counts:\n"
               "    add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}\n".format(
                 self.num_add, self.num_sub, self.num_mul, self.num_div))
@@ -46,9 +47,12 @@ class CostTracking:
                 count = self.num_routine[name]
                 cost = self.cost_routine[name]
                 count_details.append("{}:{:.2e}".format(name, count))
-                cost_details.append("{}:{:.2e}".format(name, cost))
-            s += "routine counts:\n    {}\n".format(", ".join(count_details))
-            s += "routine costs:\n    {}\n".format(", ".join(cost_details))
+                cost_details.append("{}:{:.2e} ({:.1f}%)".format(
+                                    name, cost, (100.0*cost)/total))
+            s += "routine counts:\n"
+            s += "    {}\n".format(", ".join(count_details))
+            s += "routine costs (percent of total):\n"
+            s += "    {}\n".format(", ".join(cost_details))
         return s
 
 
