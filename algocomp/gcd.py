@@ -1,6 +1,6 @@
 
 from .tracked_number import (TrackedNumber, coerce_int)
-from .cost_tracking import (gcd_tracking_start, gcd_tracking_stop)
+from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
 
 
 def xgcd(a, b):
@@ -71,7 +71,7 @@ def xgcd(a, b):
 
     Return (b,x0,y0) which relate by: x0 a0 + y0 b0 = b = gcd(a0,b0).
     """
-    tracking = gcd_tracking_start(a, b)
+    tracking = routine_tracking_start("gcd", a, b)
 
     x0, x1, y0, y1 = 0, 1, 1, 0
     while a != 0:
@@ -80,7 +80,7 @@ def xgcd(a, b):
         x0, x1 = x1, x0 - q * x1
         b, a = a, r
 
-    gcd_tracking_stop(tracking)
+    routine_tracking_stop(tracking)
 
     if b < 0:
         return (-b, -x0, -y0)
@@ -88,14 +88,14 @@ def xgcd(a, b):
 
 
 def gcd(a, b):
-    tracking = gcd_tracking_start(a, b)
+    tracking = routine_tracking_start("gcd", a, b)
 
     if abs(a)>abs(b):
         a,b = b,a
     while a != 0:
         a,b = (b%a), a
 
-    gcd_tracking_stop(tracking)
+    routine_tracking_stop(tracking)
     return b
 
 
@@ -162,7 +162,7 @@ def partial_xgcd(a, b, L):
 
     return the calculated (a,x,b,y) which meet all the required conditions now
     """
-    tracking = gcd_tracking_start(a, b)
+    tracking = routine_tracking_start("gcd", a, b)
 
     a0 = a
     x, y = 1, 0
@@ -173,6 +173,6 @@ def partial_xgcd(a, b, L):
 
     assert a*x - b*y == a0
 
-    gcd_tracking_stop(tracking)
+    routine_tracking_stop(tracking)
     return (a, x, b, y)
 

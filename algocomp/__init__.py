@@ -6,7 +6,8 @@ from .solve_linear import solve_linear
 
 from .bqf import (reduce_form, nudupl)
 
-from .cost_tracking import (CostTracking, gcd_tracking_start, gcd_tracking_stop)
+from .cost_tracking import (CostTracking, routine_tracking_start,
+                            routine_tracking_stop)
 from .tracked_number import TrackedNumber
 
 from .cube import (print_cube_stats, get_cube_with_squared_form,

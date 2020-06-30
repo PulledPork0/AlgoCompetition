@@ -6,18 +6,21 @@ class CostTracking:
     def __init__(self):
         self._last = 0
         self.cost = 0
+        # details on fundemental operations
         self.num_add = 0
         self.num_sub = 0
         self.num_mul = 0
         self.num_div = 0
-        self.num_gcd = 0
         self.cost_add = 0
         self.cost_sub = 0
         self.cost_mul = 0
         self.cost_div = 0
-        self.cost_gcd = 0
+        # details on algorithms/routines
+        self.num_routine = {}
+        self.cost_routine = {}
 
     def NewNumber(self, value=0):
+        """obtain a new cost tracked number which uses this cost tracking"""
         return TrackedNumber(self, value)
 
     def last(self):
@@ -27,25 +30,39 @@ class CostTracking:
         return diff
 
     def summary(self):
-        return ("total cost: {} ({:.2e})\n"
-                "operation counts:\n   "
-                " add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}, gcd:{:.2e}\n"
-                "operation costs:\n   "
-                " add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}, gcd:{:.2e}\n"
-                "".format(self.cost, self.cost,
-                    self.num_add, self.num_sub, self.num_mul, self.num_div,
-                        self.num_gcd,
-                    self.cost_add, self.cost_sub, self.cost_mul, self.cost_div,
-                        self.cost_gcd))
+        s  =  "total cost: {} ({:.2e})\n".format(self.cost, self.cost)
+        s += ("basic operation counts:\n"
+              "    add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}\n".format(
+                self.num_add, self.num_sub, self.num_mul, self.num_div))
+        s += ("basic operation costs:\n"
+              "    add:{:.2e}, sub:{:.2e}, mul:{:.2e}, div:{:.2e}\n".format(
+                self.cost_add, self.cost_sub, self.cost_mul, self.cost_div))
+        if len(self.num_routine):
+            details = []
+            for name,val in self.num_routine.items():
+                details.append("{}:{:.2e}".format(name,val))
+            s += "routine counts:\n    {}\n".format(",".join(details))
+            details = []
+            for name,val in self.cost_routine.items():
+                details.append("{}:{:.2e}".format(name,val))
+            s += "routine costs:\n    {}\n".format(",".join(details))
+        return s
 
 
-    # Don't care too much about the specifics of costs
-    #   want gcd > div > mul > add,sub
-    #   and for there to be no silly/hacky incentives to
-    #   unroll muls as adds, or divs as subtracts, etc.
+    # --- a normal user should not need to use the routines below directly ---
+    # they are the necessary interface for a number-like object to hook into
+    # the cost tracking
+
+    # Don't care too much about the specifics of costs:
+    #   1) should be independent of hardware / architecture details
+    #   2) willing to ignore the cost of math on constants, as natural
+    #       constants appearing in algorithms are usually small
+    #   3) primarily want div > mul > add,sub
+    #       and for there to be no silly/hacky incentives to
+    #       unroll muls as adds, or divs as subtracts, etc.
     # That is, the goal is to have the costs reasonable enough
     # that people write the algorithms naturally, and then for them
-    # to be ranked mostly by (gcd, div, mul, add+sub).
+    # to be ranked mostly by (div, mul, add+sub).
 
     def add(self, x, y):
         # O(n)
@@ -80,30 +97,40 @@ class CostTracking:
         self.cost_div += c
         self.cost += c
 
-    def gcd_start(self, x, y):
-        # the actual algorithm calculate the cost
-        # so costs from gcd will also be counted in add,mul,etc.
-        pass
+    def routine_start(self, name):
+        # the actual routine/algorithm calculate the cost
+        # so costs will also be counted in add,mul,etc.
+        if name not in self.num_routine:
+            self.num_routine[name] = 1
+            self.cost_routine[name] = 0
+        else:
+            self.num_routine[name] += 1
 
-    def gcd_stop(self, initial):
-        self.num_gcd += 1
-        self.cost_gcd += self.cost - initial
+    def routine_stop(self, name, initial):
+        self.cost_routine[name] += self.cost - initial
 
 
-# -- Helpers for tracking cost of gcd
+# -- Helpers for tracking cost of routines
 
-def gcd_tracking_start(a, b):
-    if isinstance(a, TrackedNumber):
-        ct = a.costTracking
-    elif isinstance(b, TrackedNumber):
-        ct = b.costTracking
+def routine_tracking_start(name, *var_list):
+    """
+    Starts cost tracking for a routine if any of the variables
+    are a TrackedNumber.
+
+    returns tracking_data which should be given to 'routine_tracking_stop'
+    to add the cost of the routine.
+    """
+    for var in var_list:
+        if isinstance(var, TrackedNumber):
+            ct = var.costTracking
+            break
     else:
-        return (None, 0)
-    ct.gcd_start(coerce_int(a), coerce_int(b))
-    return (ct, ct.cost)
+        return (name, None, 0)
+    ct.routine_start(name)
+    return (name, ct, ct.cost)
 
-def gcd_tracking_stop(tracking):
-    ct, initial = tracking
+def routine_tracking_stop(tracking_data):
+    name, ct, initial = tracking_data
     if ct:
-        ct.gcd_stop(initial)
+        ct.routine_stop(name, initial)
 
