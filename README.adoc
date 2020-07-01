@@ -111,7 +111,7 @@ a,b,c,d,e,f,g,h are uniquely deteremined up to an overall sign.
 So up to an overall sign, a cube can be uniquely referred to by either the
 eight corner values or the three tuples.
 
-== Algorithm to create
+=== Algorithm to create
 
 In the competition, the goal is to write a function which will take as
 input (a,b,c,d,e,f,g,h) specifying a cube, with the following additional
@@ -144,6 +144,7 @@ create_test_file.py -- Used to create new test sets with pre-computed answers.
                        Run without arguments to see the options.
 
 run_trial.py -- Used to test an algorithm entry.
+                Run without arguments to see the options.
 
 example.py -- example algorithm, which just supplies a run function
 example2.py -- example algorithm, which also supplies a custom setup function
@@ -157,7 +158,7 @@ test2048.txt -- a test file with bitsize=2048
 ....
 
 
-== Details of code entry and use of contest library
+== Details of entry code and use of contest library
 
 === algocomp
 
@@ -167,10 +168,10 @@ behind the scenes. Ideally, the user never needs to deal with this directly or
 even be aware which variables are actually integers vs. TrackedNumbers.
 
 Supported operations::
-* unary +, -, abs()
-* bool tests: bool(), ==, >=, >, <=, <, !=
-* basic arithmetic: +, -, *, %, divmod, // (integer floor division), / (integer exact division: ValueError exception result is not exact)
-* power: `**` (however, as this needs to do extra checks, it is recommended things like `x**2` are just written explicitly as `x*x`)
+* unary `+`, `-`, `abs()`
+* bool tests: `bool()`, `==`, `>=`, `>`, `+<=+`, `<`, `!=`
+* basic arithmetic: `+`, `-`, `*`, `%`, `divmod`, `//` (integer floor division), `/` (integer exact division: ValueError exception if result would not be an integer)
+* power: `+**+` (however, as this needs to do extra checks, it is recommended things like `+x**2+` are just written explicitly as `x*x`)
 
 A list of "Do Nots"::
 * Do not use bit manipulations. Instead strive to do as much possible with
@@ -190,8 +191,12 @@ as a supported operation, to prevent anyone from accidentally doing this.
 directly manipulate the int value inside a tracked object. This would
 evade cost tracking.
 ** one exception is when you want to do a sanity check assert with a small
-calculation. You can `from algocomp.tracked_number.coerce_int as coerce_int`
-and use that to avoid the cost tracking in an assert.
+calculation. You can import
++
+  from algocomp.tracked_number.coerce_int as coerce_int
++
+and then use coerce_int to strip values down to an int to avoid the cost
+tracking in an assert.
 
 
 Integer math routines supplied by algocomp::
@@ -200,14 +205,17 @@ Integer math routines supplied by algocomp::
 * `gcd(a,b)`
 * `mod_inverse(x,M)` -- returns a such that `a*x = 1 (mod M)`.
 * `partial_xgcd(a,b,L)` -- returns (u,x,v,y) such that
-*. `u*x - v*y = a`,   with `|v| <= L` or `u = 0`
-*. `gcd(u,v) = gcd(a,b)`
-*. `gcd(x,y) = 1`
+.. `u*x - v*y = a`,   with `+|v| <= L+` or `u = 0`
+.. `gcd(u,v) = gcd(a,b)`
+.. `gcd(x,y) = 1`
 * `solve_linear(a,b,c)` -- returns (x,y) such that `a*x + b*y = c`, and `|x|` minimized
 
 Useful routines for dealing with binary quadratic forms::
 * `reduce_form(a,b,c)` -- returns the reduced form equivalent to (a,b,c)
-* `nudupl(a,b,c,L=None)` -- returns a reduced form (A,B,C) that is the squared composite form of (a,b,c), the parameter L is a tuning parameter for partial reduction based on the discriminant (if not supplied, it is calculated from a,b,c)
+* `nudupl(a,b,c,L=None)` -- returns a reduced form (A,B,C) that
+is the squared composite form of (a,b,c), the parameter L is a
+tuning parameter for partial reduction based on the discriminant
+(if not supplied, it is calculated from a,b,c).
 
 Useful routines for dealing with a cube as a tuple of 8 values::
 * `print_cube_stats(cube)` -- debug print details about cube values and forms
@@ -231,22 +239,7 @@ Some details
 * all unary operations such as negation or abs() or bool() are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
 * boolean compares are free (unless something is causing large values to have almost identical values, compares of large integers should still be fast)
 * with the same operands `+`, and `-` have the same cost
-* with the same operands `/`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
-
-
-* div
-
-
-    # Don't care too much about the specifics of costs:
-    #   1) should be independent of hardware / architecture details
-    #   2) willing to ignore the cost of math on constants, as natural
-    #       constants appearing in algorithms are usually small
-    #   3) primarily want div > mul > add,sub
-    #       and for there to be no silly/hacky incentives to
-    #       unroll muls as adds, or divs as subtracts, etc.
-    # That is, the goal is to have the costs reasonable enough
-    # that people write the algorithms naturally, and then for them
-    # to be ranked mostly by (div, mul, add+sub).
+* with the same operands `//`, `/`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
 
 
 === Algorithm contest entry
