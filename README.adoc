@@ -224,19 +224,19 @@ Useful routines for dealing with a cube as a tuple of 8 values::
 
 The actual cost values have no explicit meaning.
 
-Costs were assigned to the basic arithmetic operations, and then the cost of all other routines are determined based on use of these opertions.
+Costs were assigned to the basic arithmetic operations, and then the cost of all other routines are determined based on use of these operations.
 
-The intention was to make the cost of `div > mul > add,sub` in such a way that there to be no silly/hacky incentives to unroll muls as adds, or divs as subtracts, etc.
+The intention was to make the cost of `div > mul > add,sub` in such a way that there are no silly/hacky incentives to unroll muls as adds, or divs as subtracts, etc.
 The ultimate goal is to have the costs reasonable enough that people write the algorithms naturally, and then for them to be ranked mostly by (div, mul, add+sub).
 
 Constants in the code are still just ordinary ints, and are promoted to cost tracked numbers when an operation involves them with a cost tracked variable.
-This is a necessity due to how it was decided to handle const tracking. Furthermore, most constants in the algorithms will just be small, such as 0, 1, 2, or 4. And the costs
-only remain untracked while
+This is a necessity due to how it was decided to handle cost tracking. Furthermore, most constants in the algorithms will just be small, such as 0, 1, 2, or 4.
+And the costs only remain untracked while they operate with other ints. 
 
 Some details
 
 * arithmetic operations cost more with larger operands
-* all unary operations such as negation or abs() or bool() are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
+* all unary operations such as negation `-` or `abs()` or `bool()` are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
 * boolean compares are free (unless something is causing large values to have almost identical values, compares of large integers should still be fast)
 * with the same operands `+`, and `-` have the same cost
 * with the same operands `//`, `/`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
@@ -257,12 +257,12 @@ The default setup creates the initial cube for you, and info is just an empty di
 A algorithm entry must define:
 
 * a function `run(cube, info)`
-** parameter cube: will be a tuple of 8 integer (or integer like objects)
+** parameter cube: will be a tuple of 8 integers (or integer like objects)
 ** parameter info: the info object created by the setup routine
-** returns new_cube: a new tuple of 8 integer values which means the algebraic constraints of the algorithm which were described earlier
+** returns new_cube: a new tuple of 8 integer values which meet the algebraic constraints of the algorithm which were described earlier
 
 
-It is strongly recommended to take a look at example.py and example2.py.
+It is strongly recommended to take a look at `example.py` and `example2.py`.
 
 As a quick test, try running: `./run_test.py example`
 
@@ -364,20 +364,18 @@ that for any solution:
 This value is called the discriminant. As mentioned above, this value is
 important for the existence of solutions given just two tuples. So in what
 follows, let's restrict consideration of tuples to those of some given
-discriminant. For convenience, the discriminant will be taken to be -p where
-p is a prime number and p+1 is a multiple of 8. This makes it so we know there
-exist some tuples of this discriminant, with easily producible examples:
-(1,1,(p+1)/4) and (2,1,(p+1)/8).
+discriminant. For convenience, and to match additional assumptions that are
+given for the inputs to our math puzzle, the discriminant will be taken to be -p where
+p is a prime number.
 
 With this restriction going forward, for any two tuples under consideration
 there will always exist a third which is a composition of those two tuples.
-
 
 == Equivalence
 
 Define two tuples (A,B,C) and (A',B',C') to be "equivalent" if there exists two
 other tuples T1 and T2 such that (A,B,C) is a composition of T1
-and T1, and (A',B',C') is also a composition of T1 and T2. We will
+and T2, and (A',B',C') is also a composition of T1 and T2. We will
 denote that two tuples are equivalent by writing tuple1 ~ tuple2.
 
 
@@ -422,11 +420,12 @@ respectively. Then we have:
 cube1: T1a ~ T1b * T1c
 cube2: T2a ~ T2b * T2c
 
-then there exist tuples given by
+There exist tuples given by the relations
  T3a ~ T1a * T2a
  T3b ~ T1b * T2b
  T3c ~ T1c * T2c
-and therefore
+
+Which from above therefore have the relationship
  T3a ~ T3b * T3c
 ....
 
@@ -444,6 +443,7 @@ specifying a cube, with the guarantee that the first two tuples are equal
 (A1,B1,C1) = (A2,B2,C2).
 
 Using cube composition, a new cube must be calculated such that
+
 * the new cube is the old cube composed with itself
 * the new cube also has the first two tuples equal (A1',B1',C1')=(A2',B2',C2')
 
@@ -473,8 +473,10 @@ expected cost should be at least two xgcd, and hopefully only one reduction
 like operation on the cube.
 
 However, we are interested in a very special case:
+
 * we are trying to compose a cube with itself
 * that cube has `form1 = form2`, and so `form3 ~ form1^2 = form2^2`
+
 Therefore in the resulting cube, we already know the answer to two of the 
 form compositions. If we can fit that into the cube, we get the third for free.
 In this ultra idealistic case, repeated squaring does not require an xgcd.
