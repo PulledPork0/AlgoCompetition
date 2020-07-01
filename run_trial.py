@@ -42,7 +42,7 @@ if __name__ == '__main__':
             disc, A, B, C = [int(s) for s in line.strip().split(' ')]
 
             if getattr(m, "initial_cube", None):
-                cube, info = m.initial_cube(costTracking.NewNumber(disc))
+                cube, info = m.setup(costTracking.NewNumber(disc))
             else:
                 cube, info = default_initial_cube(costTracking.NewNumber(disc))
 

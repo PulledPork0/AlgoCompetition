@@ -1,5 +1,6 @@
 
 from .tracked_number import coerce_int
+from .isqrt import isqrt
 from .solve_linear import *
 
 
@@ -29,9 +30,14 @@ def print_cube_stats(cube):
     print(' (B1-B2)/2 = {}'.format(b*g -d*e))
 
 
-def get_cube_with_squared_form(A, B, C):
+def construct_cube_with_squared_form(A, B, C):
     """
+    Quick simple construction of a cube with (A1,B1,C1)=(A2,B2,C2)=(A,B,C).
+
     Assumes we are working with a prime discriminant, so gcd(A,B)=gcd(C,B)=1.
+
+    ---
+    Algorithm:
 
     Sets up the faces of the cube like so:
     |a b| = |-1 b|    |e f| = |b f|
@@ -40,7 +46,7 @@ def get_cube_with_squared_form(A, B, C):
     This garauntees A1=A2=A, B1=B2=B, so only need to constrain C1
     which then sets the discriminant and so the first two forms = (A,B,C).
 
-    C1 = fg - eh = fA - bB = C ... solvable for f,b since gcd(A,B)=1
+    C1 = fg - eh = fA - bB = C ... this is solvable for f,b since gcd(A,B)=1
     """
 
     a = -1
@@ -56,7 +62,14 @@ def get_cube_with_squared_form(A, B, C):
 
 
 def default_initial_cube(disc):
-    """return (cube, extra_info)"""
-    cube = get_cube_with_squared_form(2, 1, (1-disc)//8)
-    return (cube, None)
+    """
+    an initial cube is constructed with
+      (A1,B1,C1) = (A2,B2,C2) = (2, 1, (1-disc)//8)
+
+    return (cube, extra_info)
+    where extra_info is just an empty dictionary
+    """
+    extra_info = {}
+    cube = construct_cube_with_squared_form(2, 1, (1-disc)//8)
+    return (cube, extra_info)
 
