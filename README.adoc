@@ -38,7 +38,7 @@ to get some feedback from the community.
 ... In this case, the repo should be made public within a day of the contest period ending.
 . Tied scores will be resolved by whoever submitted first.
 . An entry should out perform the provided example entries to be eligible for a prize.
-. To resolve disputes, the person pledging a prize has final say on that prize. 
+. To resolve disputes, the person pledging a prize has final say on that prize.
 What follows are suggestions for handling some situations:
 .. Entries which are found to evade or directly manipulate the computation cost tracking will be invalidated.
 .. If there are prizes for 2nd place or below, then duplicate entries or entries deemed as "substantially duplicate" of other entries will be invalidated except for the one submitted first.
@@ -231,7 +231,7 @@ The ultimate goal is to have the costs reasonable enough that people write the a
 
 Constants in the code are still just ordinary ints, and are promoted to cost tracked numbers when an operation involves them with a cost tracked variable.
 This is a necessity due to how it was decided to handle cost tracking. Furthermore, most constants in the algorithms will just be small, such as 0, 1, 2, or 4.
-And the costs only remain untracked while they operate with other ints. 
+And the costs only remain untracked while they operate with other ints.
 
 Some details
 
@@ -452,77 +452,6 @@ Note:
 (A3,B3,C3) ~ (A1,B1,C1) * (A2,B2,C2) ~ (A1,B1,C1) * (A1,B1,C1) ~ (A1',B1',C1')
 ....
 
-= Why another contest?
-
-"High level overview of hope for algorithm improvments" would be another way
-of framing this section.
-
-All current methods of calculating a form composition require calculating one
-extended gcd. The result however has large numbers, and so to prevent the
-size of the numbers exploding with repeated application, a form "reduction"
-is performed (finding in a sense the smallest form equivalent to the
-form just calculated). This reduction is in many ways similar to the euclidean
-algorithm. This is where most of the computation time goes, in these two
-"gcd" like calculations: one for getting the composition, the other for
-reducing.
-
-Naively, composing two cubes solves three form compositions. However, a cube
-with holds the result of two of the compositions, necessarily then already
-holds a solution to the third. So for composing two arbitrary cubes, the 
-expected cost should be at least two xgcd, and hopefully only one reduction
-like operation on the cube.
-
-However, we are interested in a very special case:
-
-* we are trying to compose a cube with itself
-* that cube has `form1 = form2`, and so `form3 ~ form1^2 = form2^2`
-
-Therefore in the resulting cube, we already know the answer to two of the 
-form compositions. If we can fit that into the cube, we get the third for free.
-In this ultra idealistic case, repeated squaring does not require an xgcd.
-
-On the other end of the spectrum from idealistic hopes, we know, because the
-algorithms exist (and are included in the contest library), that we can
-construct a cube from scratch with form1 = form2 = anything with a single xgcd.
-
-So inbetween, in the conservative but hopeful case, is that there is some
-algebraic solution to the cube composition, such that our special conditions
-help, and we do not need to completely toss the cube and start from scratch
-each time. Therefore, still requiring an xgcd, but in values roughly
-square-root the typical values of A1,B1,C1. And them a reduction operation on
-the cube, again operating on mostly already reduced size values.
-
-That hope feels plausible to me. And this feels especially plausible when you
-realize current best algorithm for squaring in form composition, called NUDUPL,
-can be rephrased as constructing a cube, and the main savings is from doing
-most of the reduction operation in cube form, before calculating the resulting
-forms (which then use some other algorithm to reduce the rest of the way).
-
-In short, the bet is there are further improvements to be made if we just
-"stay in the cube representation". It feels there should be a better way than
-each time constructing the cube from scratch, using it for some speed up, then
-tossing the cube away, only to require constructing another one from scratch
-in the next step and so on.
-
-THIS is the kind of algorithmic improvement that would lead to speed-ups
-regardless of the hardware architecture, even in design of ASIC devices.
-
-And this is why this contest exists, despite two previous contests already
-involved with squaring in form composition. The previous competitions
-instead focussed on raw wall clock time on hyper-specific hardware
-architectures with no standardization of the math library, and thus the result
-followed the incentives: everyone used the same decades old NUDUPL
-algorithm, made form reduction use standard gcd type speedups, which left the
-main focus in improvements largely in assembly language details very specific
-to the selected achitectures. Maybe that wasn't the initial intention, but
-the second contest clearly doubled down on this for some reason.
-
-This contest possibly swings too far to the other side. Its setup strongly
-suggests a particular path for improvement. However, the included library
-could be used to form other community lead competitions that allows focus 
-primarily on algorithm improvements instead of architecture specific math
-libarary improvements.
-
 
 = Properties of solutions to the cube equations
 
@@ -607,11 +536,84 @@ modify with any matrix such that ru - st = 1
 This freedom in the tuple is precisely the freedom in the
 equivalance relation mentioned above.
 
-
 == Preserving Tuple1,Tuple3 or Tuple2,Tuple3
 
 By symmetry of the cube and equations, similar manipulations can be
 done which only change Tuple2 or only change Tuple1.
+
+
+= Why another contest?
+
+"High level overview of hope for algorithm improvments" would be another way
+of framing this section.
+
+All current best methods of calculating a form composition require calculating
+one extended gcd. The result however has large numbers, and so to prevent the
+size of the numbers exploding with repeated application, a form "reduction"
+is performed (finding in a sense the smallest form equivalent to the
+form just calculated). This reduction is in many ways similar to the euclidean
+algorithm. This is where most of the computation time goes, in these two
+"gcd" like calculations: one for getting the composition, the other for
+reducing.
+
+Naively, composing two cubes solves three form compositions. However, a cube
+with holds the result of two of the compositions, necessarily then already
+holds a solution to the third. So for composing two arbitrary cubes, the
+expected cost should be at least two xgcd, and hopefully only one reduction
+like operation on the cube.
+
+However, we are interested in a very special case:
+
+* we are trying to compose a cube with itself
+* that cube has `form1 = form2`, and so `form3 ~ form1^2 = form2^2`
+
+Therefore in the resulting cube, we already know the answer to two of the
+form compositions. If we can fit that into the cube, we get the third for free.
+In this ultra idealistic case, repeated squaring may not even require an xgcd.
+
+On the other end of the spectrum from idealistic hopes, we know, because the
+algorithm exists (and are included in the contest library), that we can
+construct a cube from scratch with form1 = form2 = anything with a single xgcd.
+
+So inbetween, in the conservative but hopeful case, is that there is some
+algebraic solution to the cube composition, such that our special conditions
+help, and we do not need to completely toss the cube and start from scratch
+each time. Therefore, still requiring an xgcd, but in values roughly
+square-root the typical values of A1,B1,C1. And then a reduction operation on
+the cube, again operating on mostly already reduced size values.
+
+That hope feels plausible to me. And this feels especially plausible when you
+realize the current best algorithm for squaring in form composition, called
+NUDUPL, can be rephrased as constructing a cube, and the main savings is from
+doing most of the reduction operation in cube form, before calculating the
+resulting forms (which then use some other algorithm to reduce the rest of the
+way).
+
+In short, the bet is there are further improvements to be made if we just
+"stay in the cube representation". It feels there should be a better way than
+each time constructing the cube from scratch, using it for some speed up, then
+tossing the cube away, only to require constructing another one from scratch
+in the next step and so on.
+
+THIS is the kind of general algorithmic improvement that would lead to
+speed-ups regardless of the hardware architecture, even in design of ASIC
+devices.
+
+And this is why this contest exists, despite two previous contests already
+involved with squaring in form composition. The previous competitions
+instead focussed on raw wall clock time on hyper-specific hardware
+architectures with no standardization of the math library, and thus the result
+followed the incentives: everyone used the same decades old NUDUPL
+algorithm, made form reduction use standard gcd type speedups, which left the
+main focus in improvements largely in assembly language details very specific
+to the selected achitectures. Maybe that wasn't the initial intention, but
+the second contest clearly doubled down on this for some reason.
+
+This contest possibly swings too far to the other side. Its setup strongly
+suggests a particular path for improvement. However, the included library
+could be used to form other community led competitions that allows focus
+primarily on algorithm improvements instead of architecture specific math
+libarary improvements.
 
 
 = Reference
