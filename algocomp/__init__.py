@@ -2,6 +2,7 @@
 from .isqrt import isqrt
 from .ipow import ipow
 from .gcd import (xgcd, gcd, mod_inverse, partial_xgcd)
+from .exact_div import exact_div
 from .solve_linear import solve_linear
 
 from .bqf import (reduce_form, nudupl)

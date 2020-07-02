@@ -70,7 +70,7 @@ class TrackedNumber:
 
     def __le__(self, other):
         return self.value <= coerce_int(other)
-    
+
     def __lt__(self, other):
         return self.value < coerce_int(other)
 
@@ -95,13 +95,23 @@ class TrackedNumber:
         self.costTracking.mul(x,y)
         return TrackedNumber(self.costTracking, x*y)
 
-    def __truediv__(self, other):
-        x,y = self.value, self._check_coerce_int(other)
-        q, r = divmod(x,y)
-        if r != 0:
-            raise ValueError("dividend is not multiple of divisor")
-        self.costTracking.div(x,y)
-        return TrackedNumber(self.costTracking, x//y)
+    # -- this no longer supported
+    # issue:
+    #   a/b will give a float when a and b are int, even if b divides a
+    #
+    # As the point is to be able to use these objects mixed with ints
+    # without worry, this operator must therefore be discouraged.
+    #
+    # use "exact_div" function if you want to denote a division is
+    # an exact division and assert check that it is
+    #
+    #def __truediv__(self, other):
+    #    x,y = self.value, self._check_coerce_int(other)
+    #    q, r = divmod(x,y)
+    #    if r != 0:
+    #        raise ValueError("dividend is not multiple of divisor")
+    #    self.costTracking.div(x,y)
+    #    return TrackedNumber(self.costTracking, x//y)
 
     def __floordiv__(self, other):
         x,y = self.value, self._check_coerce_int(other)
