@@ -175,22 +175,33 @@ def partial_xgcd(a, b, L):
 
     return the calculated (u,x,v,y) which meet all the required conditions now
     """
-    tracking = routine_tracking_start("partial_gcd", a, b)
+    tracking = routine_tracking_start("p_gcd", a, b)
 
     u, x, v, y = a, 1, b, 0
     nstep = 0
     while u != 0 and abs(v) > L:
+        # get v = qu + r, with minimum |r|
+        # we will want to adjust r if
+        #   (|r| > |u/2|), which is equivalent to checking
+        #   (|2r| > |u|),
+        #   (|r| > |u| - |r|)
+        # then using the fact that for python,
+        # divmod will give |r| < |u|  and  r,u will have the same sign
+        #   (|r| > |u - r|)
         q, r = divmod(v, u)
-        x, y = y, x + q*y
-        u, v = r, u
+        diff = u - r
+        if abs(r) > abs(diff):
+            q = q + 1
+            r = -diff
+
+        # update variables
+        x, y = -y, x + q*y
+        u, v = -r, u
         nstep += 1
     assert _int(u)*_int(x) + _int(v)*_int(y) == a
 
-    if nstep & 1:
-        u,x = -u,-x
-
-    if 1:
-        # print detailed info on partial_gcd
+    if 0:
+        # print detailed info on partial_xgcd
         def nbit(x):
             return _int(x).bit_length()
         print("nstep={}  a:{}, b:{}  -->  u:{}, x:{}, v:{}, y:{}".format(
