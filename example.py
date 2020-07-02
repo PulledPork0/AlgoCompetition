@@ -19,18 +19,33 @@ def run(cube, info):
     C3 = d*g - c*h
 
     A,B,C = reduce_form(A3, B3, C3)
-    
+
     """
     Assumes we are working with a prime discriminant, so gcd(A,B)=gcd(C,B)=1
 
-    Sets up the faces of the cube like so:
+    Sets up the faces of the new cube like so:
     |a b| = |-1 b|    |e f| = |b f|
     |c d|   | 0 A| ,  |g h|   |A B|
 
-    This garauntees A1=A2=A, B1=B2=B, so only need to constrain C1
-    which then sets the discriminant and so the first two forms = (A,B,C)
+    Which only has two unknowns: b,f
 
-    Af - Bb = C ... solvable since gcd(A,B)=1
+    From the cube equations:
+      bc - ad = A1
+      ce - ag = A2
+      cf - ah = (B1 + B2)/2
+      bg - de = (B1 - B2)/2
+      fg - eh = C1
+      df - bh = C2
+
+    We can see that this setup of the new cube guarantees A1=A2=A, B1=B2=B.
+    As a solution to the cube equations also has:
+        B1^2 - 4 A1 C1 = B2^2 - 4 A2 C2 = discriminant
+    We just need to find the values b,f which set C1 = C, and this will
+    make the first two forms = (A,B,C).
+
+    C1 = fg - eh = fA - Bb = C
+    And this will always be solvable for b,f because the additional
+    guarantees of the contest puzzle allow us to know gcd(A,B) = 1.
     """
 
     # initialize most of the cube
