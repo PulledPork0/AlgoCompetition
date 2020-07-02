@@ -2,6 +2,7 @@
 from .gcd import xgcd
 from .isqrt import isqrt
 from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
+from .exact_div import exact_div
 
 
 def reduce_form(a,b,c):
@@ -91,7 +92,7 @@ def nudupl(a,b,c, L=None):
 
     # -- Special case --
     if z == 0:
-        g = (B*v3+c)//d
+        g = exact_div(B*v3+c, d)
         a2 = d*d
         c2 = v3*v3
         b2 = b + (d+v3)*(d+v3) - a2 - c2
@@ -99,8 +100,8 @@ def nudupl(a,b,c, L=None):
         return reduce_form(a2,b2,c2)
 
     # -- final computations --
-    e = (c*v+B*d)//A  # text explicitly mentions both these divisions are exact
-    g = (e*v2-B)//v
+    e = exact_div(c*v+B*d, A)
+    g = exact_div(e*v2-B, v)
     b2 = e*v2 + v*g
     if d1 > 1:
         b2 = d1*b2
