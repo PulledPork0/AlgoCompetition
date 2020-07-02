@@ -134,7 +134,7 @@ with as little computational cost as possible.
 This function will be tested by giving it an initial cube and then repeated
 application of the function on its own output. So it is also advantageous to
 keep the size of the integers in your cube solution from getting larger each
-application.
+time the function is called.
 
 (As discussed in the '<<skim-some-deeper-math-details>>' section,
 the `~` in the above equation is
@@ -144,7 +144,42 @@ if desired. The details of this freedom is shown explicitly in
 pursing those details is not strictly required, and replacing the `~` with a
 normal `=` in that equation would still give acceptible solutions.)
 
-== Contents of this repo
+
+=== Programming details
+
+An algorithm entry may optionally define:
+
+* a function `setup(discriminant)`
+** parameter discriminant: an integer (or integer like object)
+** should return (cube, info)
+*** cube: the initial cube constructed so (A1,B1,C1) = (A2,B2,C2) = (2, 1, (1-disc)//8)
+*** info: any object you wish which will be passed onto 'run' for convenience.
+Its intended purpose is to hold values that only need to be calculated once at
+startup, or to pass possibly useful internal values from a run calculation to
+the next step.
+
+The default setup creates the initial cube for you, and info is just an empty
+dictionary object that 'run' can shove internal values into if it wants.
+
+A algorithm entry must define:
+
+* a function `run(cube, info)`
+** parameter cube: will be a tuple of 8 integers (or integer like objects)
+representing a,b,c,d,e,f,g,h in the cube equations.
+** parameter info: the info object created by the setup routine
+** returns new_cube: a new tuple of 8 integer values which meet the algebraic
+constraints of the algorithm which were described earlier.
+
+
+It is strongly recommended to take a look at `example.py` and `example2.py`.
+
+As a quick test, try running: `./run_test.py example`
+
+
+
+== Provided code and contest library
+
+=== Contents of this repo
 
 ....
 create_test_file.py -- Used to create new test sets with pre-computed answers.
@@ -165,9 +200,7 @@ test2048.txt -- a test file with bitsize=2048
 ....
 
 
-== Details of entry code and use of contest library
-
-=== algocomp
+=== algocomp module
 
 The algocomp library defines a class TrackedNumber which for the most part
 can be treated like an integer. This handles cost tracking of operations
@@ -242,47 +275,30 @@ transformation on (A3,B3,C3)
 
 The actual cost values have no explicit meaning.
 
-Costs were assigned to the basic arithmetic operations, and then the cost of all other routines are determined based on use of these operations.
+Costs were assigned to the basic arithmetic operations, and then the cost of
+all other routines are determined based on use of these operations.
 
-The intention was to make the cost of `div > mul > add,sub` in such a way that there are no silly/hacky incentives to unroll muls as adds, or divs as subtracts, etc.
-The ultimate goal is to have the costs reasonable enough that people write the algorithms naturally, and then for them to be ranked mostly by (div, mul, add+sub).
+The intention was to make the cost of `div > mul > add,sub` in such a way that
+there are no silly/hacky incentives to unroll muls into a huge loop of adds,
+or divs as subtracts, etc.
+The ultimate goal is to have the relative costs reasonable enough that people
+write the algorithms naturally, and then for them to be essentially ranked
+by the usage of (div, mul, add+sub).
 
-Constants in the code are still just ordinary ints, and are promoted to cost tracked numbers when an operation involves them with a cost tracked variable.
-This is a necessity due to how it was decided to handle cost tracking. Furthermore, most constants in the algorithms will just be small, such as 0, 1, 2, or 4.
-And the costs only remain untracked while they operate with other ints.
+Constants in the code are still just ordinary ints, and are promoted to cost
+tracked numbers when an operation involves them with a cost tracked variable.
+This is a necessity due to how it was decided to handle cost tracking.
+Furthermore, most constants in the algorithms will just be small, such
+as 0, 1, 2, or 4. And the costs only remain untracked while they operate with
+other ints.
 
-Some details
+Some details:
 
 * arithmetic operations cost more with larger operands
 * all unary operations such as negation `-` or `abs()` or `bool()` are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
 * boolean compares are free (unless something is causing large values to have almost identical values, compares of large integers should still be fast)
 * with the same operands `+`, and `-` have the same cost
 * with the same operands `//`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
-
-
-=== Algorithm contest entry
-
-An algorithm entry may optionally define:
-
-* a function `setup(discriminant)`
-** parameter discriminant: an integer (or integer like object)
-** should return (cube, info)
-*** cube: the initial cube constructed so (A1,B1,C1) = (A2,B2,C2) = (2, 1, (1-disc)//8)
-*** info: any object you wish which will be passed onto 'run' for convenience. Its intended purpose is to hold values that only need to be calculated once at startup, or pass possibly useful internal values from a run calculation to the next step.
-
-The default setup creates the initial cube for you, and info is just an empty dictionary object that 'run' can shove internal values into if it wants.
-
-A algorithm entry must define:
-
-* a function `run(cube, info)`
-** parameter cube: will be a tuple of 8 integers (or integer like objects)
-** parameter info: the info object created by the setup routine
-** returns new_cube: a new tuple of 8 integer values which meet the algebraic constraints of the algorithm which were described earlier
-
-
-It is strongly recommended to take a look at `example.py` and `example2.py`.
-
-As a quick test, try running: `./run_test.py example`
 
 
 = Useful algebra results
@@ -360,20 +376,19 @@ The cube equations have some interesting properties.
 
 === New solution with overall sign flip
 
-Since all the tuple values A1,A2,etc. are homogenous degree 2 polynomials in
-terms of the cube values, if we invert all the cube values we get another cube
+Since all the tuple values A1,A2,etc. are a sum of terms "quadratic" in the
+cube values, if we chnage the sign of all the cube values we get another cube
 solution with the same tuple values.
 
 === Equivalence Transformations
 
-
 Given a cube, there are some simple transformations we can do to the values
 which preserves two of the three tuples, and changes the third in a simple way.
 
-In particular in this subsection, we will look at transformations which 
-preserve Tuple1,Tuple2 and only change Tuple3. Given a cube, any new tuple we
-can obtain for Tuple3 is said to be "equivalent" to Tuple3. The full set of
-forms related in this way is called an "equivalence class".
+In particular for this subsection, we will look at transformations which 
+preserve  Tuple1,Tuple2 and only change Tuple3. Given a cube, any new tuple we
+can obtain for Tuple3 is said to be "equivalent" to the original Tuple3.
+The full set of forms related in this way is called an "equivalence class".
 
 Here is an example transformation that preserves Tuple1, and Tuple2, but
 changes Tuple3 in a simple way.
@@ -431,10 +446,10 @@ second
     |B3'/2  C3' |   |n 1| |B3/2  C3 | |0 1|
 ....
 
-These two manipulations can combined, and repeated.
+These two manipulations can combined, and repeated, leading to the following
+general case
 
 ....
-general case
 modify with any matrix such that ru - st = 1
     |a' b' e' f'| = |r s| |a b e f|
     |c' d' g' h'|   |t u| |c d g h|
@@ -446,8 +461,8 @@ modify with any matrix such that ru - st = 1
 This freedom in the tuple is precisely the freedom in the
 equivalance relation mentioned above.
 
-A routine to do a transformation on the cube like this is provided in the
-algocomp library: `transform_cube(cube, r,s,t,u,v)`.
+A routine to do a general matrix transformation on the cube like this
+is provided in the algocomp library: `transform_cube(cube, r,s,t,u)`.
 
 
 === Preserving Tuple1,Tuple3 or Tuple2,Tuple3
