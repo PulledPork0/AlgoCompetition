@@ -99,7 +99,10 @@ class CostTracking:
         # ~ Burnikel-Ziegler divide-and-conquer division
         #  nbit / nbit takes O( M(n) log n )
         bits = float(x.bit_length() + y.bit_length())
-        c = int( log(bits) * (bits**1.6) )
+        if bits:
+            c = int( log(bits) * (bits**1.6) )
+        else:
+            c = 0
         self.num_div += 1
         self.cost_div += c
         self.cost += c
