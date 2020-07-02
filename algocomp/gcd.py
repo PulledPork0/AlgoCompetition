@@ -116,6 +116,11 @@ def partial_xgcd(a, b, L):
       2) gcd(u,v) = gcd(a,b)
       3) gcd(x,y) = 1
 
+    More precisely, there is guaranteed to be a matrix M such that
+        det(M) = 1
+    and
+        [u  v] = [a  b] M
+
     Note: this uses a positive sign convention like xgcd. This differs from
     the sign convention in some literature and libraries such as Flint.
 
@@ -143,15 +148,20 @@ def partial_xgcd(a, b, L):
         r y + u (x + q y) = a
 
     using this, new constants can be chosen for the next iteration
-        u' x' + v' y' = a   <---->   (r) (y) + (u) (x + q y) = a
+        u' x' + v' y' = a   <---->   (-r) (-y) + (u) (x + q y) = a
+    the additional negations are so the transformation each
+    step have a determinant of one
+        |x'| = |0 -1| |x|       |u'| = |q -1| |u|
+        |y'|   |1  q| |y|       |v'|   |1  0| |v|
+
     written out explicitly:
-        x' = y
+        x' = -y
         y' = x + q y
-        u' = r
+        u' = -r
         v' = u
     which can be verified to preserve the other loop invariants
-        gcd(u', v') = gcd(r, u) = gcd(r + qu, u) = gcd(v, u) = gcd(a, b)
-        gcd(x', y') = gcd(y, x + q y) = gcd(y, x) = 1
+        gcd(u', v') = gcd(-r, u) = gcd(-r - qu, u) = gcd(-v, u) = gcd(a, b)
+        gcd(x', y') = gcd(-y, x + q y) = gcd(y, x) = 1
 
     repeat loop
 
@@ -170,8 +180,8 @@ def partial_xgcd(a, b, L):
     u, x, v, y = a, 1, b, 0
     while u != 0 and abs(v) > L:
         q, r = divmod(v, u)
-        x, y = y, x + q*y
-        u, v = r, u
+        x, y = -y, x + q*y
+        u, v = -r, u
     assert _int(u)*_int(x) + _int(v)*_int(y) == a
 
     routine_tracking_stop(tracking)
