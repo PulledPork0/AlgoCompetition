@@ -1,5 +1,5 @@
 
-from .tracked_number import coerce_int
+from .tracked_number import coerce_int as _int
 from .isqrt import isqrt
 from .solve_linear import *
 
@@ -8,7 +8,7 @@ def print_cube_stats(cube):
     """for debugging: given a cube as a tuple of 8 values, print some stats"""
 
     # extract ints, so none of this gets counted in cost
-    a,b,c,d,e,f,g,h = [coerce_int(x) for x in cube]
+    a,b,c,d,e,f,g,h = [_int(x) for x in cube]
 
     print('-'*40)
     print('a={} b={} c={} d={} e={} f={} g={} h={}'.format(a,b,c,d,e,f,g,h))
@@ -59,6 +59,37 @@ def construct_cube_with_squared_form(A, B, C):
     e = b
 
     return (a,b,c,d,e,f,g,h)
+
+
+def transform_cube(cube, r,s,t,u):
+    """
+    applies an matrix transformation to a cube, which preserves (A1,B1,C1)
+    and (A2,B2,C2) but does an equivalence transformation on (A3,B3,C3)
+
+    |new_a new_b| = |r s| |a b|
+    |new_c new_d|   |t u| |c d|
+
+    |new_e new_f| = |r s| |e f|
+    |new_g new_h|   |t u| |g h|
+
+    """
+
+    # sanity check that transform has determinant 1
+    assert _int(r)*_int(u) - _int(s)*_int(t) == 1
+
+    a,b,c,d,e,f,g,h = cube
+
+    new_a = r*a + s*c
+    new_b = r*b + s*d
+    new_c = t*a + u*c
+    new_d = t*b + u*d
+
+    new_e = r*e + s*g
+    new_f = r*f + s*h
+    new_g = t*e + u*g
+    new_h = t*f + u*h
+
+    return (new_a, new_b, new_c, new_d, new_e, new_f, new_g, new_h)
 
 
 def default_initial_cube(disc):
