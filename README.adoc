@@ -170,17 +170,20 @@ even be aware which variables are actually integers vs. TrackedNumbers.
 Supported operations::
 * unary `+`, `-`, `abs()`
 * bool tests: `bool()`, `==`, `>=`, `>`, `+<=+`, `<`, `!=`
-* basic arithmetic: `+`, `-`, `*`, `%`, `divmod`, `//` (integer floor division), `/` (integer exact division: ValueError exception if result would not be an integer)
+* basic arithmetic: `+`, `-`, `*`, `%`, `divmod`, `//` (integer floor division)
 * power: `+**+` (however, as this needs to do extra checks, it is recommended things like `+x**2+` are just written explicitly as `x*x`)
 
 A list of "Do Nots"::
+* Do not use assignment operators. Instead of writing "a += b" explicitly
+write it out as "a = a + b". This is necessary to allow promotion of ints
+to tracked values for cost tracking. It also prevents aliasing issues.
+* Do not use `/` for division. Instead use `//`, or if you want to denote the
+division should be exact, use `exact_div`. The `/` division creates floats
+from integers even if the division is exact.
 * Do not use bit manipulations. Instead strive to do as much possible with
 the basic arithmetic operations and the provided library routines. Bit
 manipulations operators were not defined for the tracked values to strongly
 encourage this.
-* Do not use assignment operators. Instead of writing "a += b" explicitly
-write it out as "a = a + b". This is necessary to allow promotion of ints
-to tracked values for cost tracking.
 * Do not try to cast an expression or value using int(). This implies you
 expect an intermediate value in some calculation to be a float, which when
 working with large ints means a lot of precision was just lost. So this is
@@ -201,6 +204,7 @@ tracking in an assert.
 
 Integer math routines supplied by algocomp::
 * `isqrt(x)` -- integer square root, returns sqrt(x) rounded down to nearest integer
+* `exact_div(a,b)` -- division, but raises exception if b does not divide a
 * `xgcd(a,b)` -- returns (g,x,y) such that `a*x + b*y = g = gcd(a,b)`
 * `gcd(a,b)`
 * `mod_inverse(x,M)` -- returns a such that `a*x = 1 (mod M)`.
@@ -218,6 +222,9 @@ tuning parameter for partial reduction based on the discriminant
 (if not supplied, it is calculated from a,b,c).
 
 Useful routines for dealing with a cube as a tuple of 8 values::
+* `transform_cube(cube, r,s,t,u)` -- applies a matrix transformation to a cube,
+which preserves (A1,B1,C1) and (A2,B2,C2), but does an equivalence
+transformation on (A3,B3,C3)
 * `print_cube_stats(cube)` -- debug print details about cube values and forms
 
 === Cost calculations
@@ -239,7 +246,7 @@ Some details
 * all unary operations such as negation `-` or `abs()` or `bool()` are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
 * boolean compares are free (unless something is causing large values to have almost identical values, compares of large integers should still be fast)
 * with the same operands `+`, and `-` have the same cost
-* with the same operands `//`, `/`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
+* with the same operands `//`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
 
 
 === Algorithm contest entry
@@ -459,8 +466,9 @@ The cube equations have some interesting properties.
 
 == New solution with overall sign flip
 
-Since all the tuple values A1,A2,etc. are a bilinear combination of the 8 cube
-values, if we invert all the cube values, this does not change the tuple values.
+Since all the tuple values A1,A2,etc. are degree 2 polynomials in terms of the
+cube values, if we invert all the cube values, this does not change the tuple
+values.
 
 == Preserving Tuple1,Tuple2 and changing Tuple3
 
