@@ -38,7 +38,7 @@ def reduce_form(a,b,c):
         b = nc - b
         nstep += 1
 
-    if 1:
+    if 0:
         # print detailed info on reduction
         def nbit(x):
             return _int(x).bit_length()

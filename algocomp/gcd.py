@@ -181,10 +181,13 @@ def partial_xgcd(a, b, L):
     nstep = 0
     while u != 0 and abs(v) > L:
         q, r = divmod(v, u)
-        x, y = -y, x + q*y
-        u, v = -r, u
+        x, y = y, x + q*y
+        u, v = r, u
         nstep += 1
     assert _int(u)*_int(x) + _int(v)*_int(y) == a
+
+    if nstep & 1:
+        u,x = -u,-x
 
     if 1:
         # print detailed info on partial_gcd
