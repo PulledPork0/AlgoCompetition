@@ -175,7 +175,7 @@ def partial_xgcd(a, b, L):
 
     return the calculated (u,x,v,y) which meet all the required conditions now
     """
-    tracking = routine_tracking_start("gcd", a, b)
+    tracking = routine_tracking_start("partial_gcd", a, b)
 
     u, x, v, y = a, 1, b, 0
     while u != 0 and abs(v) > L:
