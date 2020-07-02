@@ -32,7 +32,7 @@ def divmod_min(a, b):
 
 def mod_min(a, b):
     """
-    return r such |r| is minimum value such that r = a (mod b)
+    return r such that r = a (mod b), with minimum |r|
     """
     # like divmod_min, just skipping a single add
     r = (a % b)

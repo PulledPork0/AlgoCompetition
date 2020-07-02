@@ -1,6 +1,7 @@
 
 from .tracked_number import coerce_int as _int
 from .gcd import xgcd
+from .int_div import (exact_div, mod_min)
 
 
 def solve_linear(a,b,c):
@@ -36,34 +37,21 @@ def solve_linear(a,b,c):
         y = v (c/g) - n a
 
     using the freedom in n, we can get the minimal x
-        -b/2 < x <= b/2
+        -|b/2| < x <= |b/2|
     according to:
     x = (u c / g) % b
-    if x > b/2:
+    if abs(x) > abs(b/2):  # basicly, but see mod_min for actual details
         x = x - b
 
-    This can be improved with a minor trick used by Cohen and others,
-    (x > b/2) is the same as checking (2x > b), thus (x > b - x)
-
-    So the following is equivalent only using negation and the difference
-    which is a value we want anyway if changing the value of x.
-
-    diff = b - x
-    if x > diff:
-        x = -diff
     """
 
     if g == 1:
-        x = (u*c) % b  # note: b=0 already handled in special case
+        x = mod_min(u*c, b) # note: b=0 already handled in special case
     else:
-        x = (u*(c//g)) % b  # note: b=0 already handled in special case
-
-    diff = b - x
-    if x > diff:
-        x = -diff
+        x = mod_min(u*(c//g), b) # note: b=0 already handled in special case
 
     # now with the minimal x, just solve for y
-    y = (c - a*x)//b
+    y = exact_div(c - a*x, b)
 
     return (x,y)
 

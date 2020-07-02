@@ -207,11 +207,14 @@ tracking in an assert.
 Integer math routines supplied by algocomp::
 * `isqrt(x)` -- integer square root, returns sqrt(x) rounded down to nearest integer
 * `exact_div(a,b)` -- division, but raises exception if b does not divide a
+* `divmod_min(a,b)` -- returns q,r such that `a = q*b + r`, with minimum `|r|`
+* `mod_min(a,b)` -- returns r such that `r = a (mod b)`, with minimum `|r|`
+* `gcd(a,b)` -- returns the greatest common divisor of a and b
 * `xgcd(a,b)` -- returns (g,x,y) such that `a*x + b*y = g = gcd(a,b)`
-* `gcd(a,b)`
 * `mod_inverse(x,M)` -- returns a such that `a*x = 1 (mod M)`.
 * `partial_xgcd(a,b,L)` -- returns (u,x,v,y) such that
 .. `u*x - v*y = a`,   with `+|v| <= L+` or `u = 0`
+.. there exists a matrix M such that `+[u v] = [a b] M+`, with `det(M) = 1`
 .. `gcd(u,v) = gcd(a,b)`
 .. `gcd(x,y) = 1`
 * `solve_linear(a,b,c)` -- returns (x,y) such that `a*x + b*y = c`, and `|x|` minimized
