@@ -2,9 +2,9 @@
 :toc:
 :toc-placement!:
 
-This algorithm competition allows programmers and math puzzle lovers to compete
-by writing an algorithm to solve a math puzzle using as little "computational
-cost" as possible.
+This algorithm competition allows programmers and math puzzle enthusiasts to
+compete by writing an algorithm to solve a math puzzle using as little
+"computational cost" as possible.
 
 A python utility is supplied which allows one to write their algorithm in
 python and easily check its correctness as well as have its computational cost
@@ -16,7 +16,7 @@ toc::[]
 
 This contest is related to previous challenges from Chia Networks, but this
 contest is not run by nor affiliated with them. It is merely being setup by a
-fan of the math puzzle by those contests.
+fan of the math puzzle embedded in those contests.
 
 == Rules
 
