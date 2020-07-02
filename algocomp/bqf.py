@@ -3,7 +3,7 @@ from .gcd import xgcd
 from .isqrt import isqrt
 from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
 from .tracked_number import coerce_int as _int
-from .exact_div import exact_div
+from .int_div import exact_div
 
 
 def reduce_form(a,b,c):

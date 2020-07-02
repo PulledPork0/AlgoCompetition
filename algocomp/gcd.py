@@ -2,6 +2,8 @@
 from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
 from .tracked_number import coerce_int as _int
 
+from .int_div import (divmod_min, mod_min)
+
 
 def xgcd(a, b):
     """
@@ -75,7 +77,7 @@ def xgcd(a, b):
 
     x0, x1, y0, y1 = 0, 1, 1, 0
     while a != 0:
-        q, r = divmod(b, a)
+        q, r = divmod_min(b, a)
         y0, y1 = y1, y0 - q * y1
         x0, x1 = x1, x0 - q * x1
         b, a = a, r
@@ -93,7 +95,7 @@ def gcd(a, b):
     if abs(a)>abs(b):
         a,b = b,a
     while a != 0:
-        a,b = (b%a), a
+        a,b = mod_min(b,a), a
 
     routine_tracking_stop(tracking)
     if b < 0:
@@ -180,21 +182,7 @@ def partial_xgcd(a, b, L):
     u, x, v, y = a, 1, b, 0
     nstep = 0
     while u != 0 and abs(v) > L:
-        # get v = qu + r, with minimum |r|
-        # we will want to adjust r if
-        #   (|r| > |u/2|), which is equivalent to checking
-        #   (|2r| > |u|),
-        #   (|r| > |u| - |r|)
-        # then using the fact that for python,
-        # divmod will give |r| < |u|  and  r,u will have the same sign
-        #   (|r| > |u - r|)
-        q, r = divmod(v, u)
-        diff = u - r
-        if abs(r) > abs(diff):
-            q = q + 1
-            r = -diff
-
-        # update variables
+        q,r = divmod_min(v, u)  # get v = qu + r, with minimum |r|
         x, y = -y, x + q*y
         u, v = -r, u
         nstep += 1

@@ -2,7 +2,7 @@
 from .tracked_number import coerce_int
 from .solve_linear import *
 from .gcd import (xgcd, gcd, partial_xgcd)
-from .exact_div import exact_div
+from .int_div import (exact_div, mod_min)
 from .cube import *
 
 
