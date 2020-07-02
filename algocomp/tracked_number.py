@@ -145,13 +145,15 @@ class TrackedNumber:
         self.costTracking.mul(x,y)
         return TrackedNumber(self.costTracking, x*y)
 
-    def __rtruediv__(self, other):
-        x,y = self._check_coerce_int(other), self.value
-        q, r = divmod(x,y)
-        if r != 0:
-            raise ValueError("dividend is not multiple of divisor")
-        self.costTracking.div(x,y)
-        return TrackedNumber(self.costTracking, x//y)
+    # -- no longer supported
+    # see notes under truediv for details
+    #def __rtruediv__(self, other):
+    #    x,y = self._check_coerce_int(other), self.value
+    #    q, r = divmod(x,y)
+    #    if r != 0:
+    #        raise ValueError("dividend is not multiple of divisor")
+    #    self.costTracking.div(x,y)
+    #    return TrackedNumber(self.costTracking, x//y)
 
     def __rfloordiv__(self, other):
         x,y = self._check_coerce_int(other), self.value
