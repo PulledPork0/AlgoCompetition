@@ -2,11 +2,14 @@
 from .gcd import xgcd
 from .isqrt import isqrt
 from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
+from .tracked_number import coerce_int as _int
 from .exact_div import exact_div
 
 
 def reduce_form(a,b,c):
     """calculates reduced binary quadratic form"""
+    a0,b0,c0 = a,b,c
+
     # -- normalize form --
     if c<a:
         a, b, c = c, -b, a
@@ -23,6 +26,7 @@ def reduce_form(a,b,c):
     b = b - an
 
     # -- reduce --
+    nstep = 1
     while a > c or (a == c and b < 0):
         # effictively:
         #   a, b, c = c, -b, a
@@ -32,6 +36,14 @@ def reduce_form(a,b,c):
         b = b - nc
         a, c = c, a - n*b
         b = nc - b
+        nstep += 1
+
+    if 1:
+        # print detailed info on reduction
+        def nbit(x):
+            return _int(x).bit_length()
+        print("nstep={}  a0:{}, b0:{}, c0:{} --> a:{}, b:{}, c:{}".format(
+                nstep, nbit(a0), nbit(b0), nbit(c0), nbit(a), nbit(b), nbit(c)))
 
     routine_tracking_stop(tracking)
 

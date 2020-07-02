@@ -178,11 +178,20 @@ def partial_xgcd(a, b, L):
     tracking = routine_tracking_start("partial_gcd", a, b)
 
     u, x, v, y = a, 1, b, 0
+    nstep = 0
     while u != 0 and abs(v) > L:
         q, r = divmod(v, u)
         x, y = -y, x + q*y
         u, v = -r, u
+        nstep += 1
     assert _int(u)*_int(x) + _int(v)*_int(y) == a
+
+    if 1:
+        # print detailed info on partial_gcd
+        def nbit(x):
+            return _int(x).bit_length()
+        print("nstep={}  a:{}, b:{}  -->  u:{}, x:{}, v:{}, y:{}".format(
+                nstep, nbit(a), nbit(b), nbit(u), nbit(x), nbit(v), nbit(y)))
 
     routine_tracking_stop(tracking)
     return (u, x, v, y)
