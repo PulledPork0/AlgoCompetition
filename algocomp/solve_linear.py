@@ -4,8 +4,8 @@ from .gcd import xgcd
 from .int_div import (exact_div, mod_min)
 
 
-def solve_linear(a,b,c):
-    """return (x,y) such that a*x + b*y = c, and |x| minimized"""
+def solve_linear_x(a,b,c):
+    """returns x with the minimum |x| such that a*x + b*y = c has a solution"""
 
     # Start by checking some special cases first
     if a==0:
@@ -50,8 +50,14 @@ def solve_linear(a,b,c):
     else:
         x = mod_min(u*(c//g), b) # note: b=0 already handled in special case
 
-    # now with the minimal x, just solve for y
-    y = exact_div(c - a*x, b)
+    return x
 
+
+def solve_linear(a,b,c):
+    """return (x,y) such that a*x + b*y = c, with |x| minimized"""
+
+    x = solve_linear_x(a,b,c)
+    y = exact_div(c - a*x, b)
     return (x,y)
+
 

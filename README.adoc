@@ -217,7 +217,8 @@ Integer math routines supplied by algocomp::
 .. there exists a matrix M such that `+[u v] = [a b] M+`, with `det(M) = 1`
 .. `gcd(u,v) = gcd(a,b)`
 .. `gcd(x,y) = 1`
-* `solve_linear(a,b,c)` -- returns (x,y) such that `a*x + b*y = c`, and `|x|` minimized
+* `solve_linear(a,b,c)` -- returns (x,y) such that `a*x + b*y = c`, with `|x|` minimized
+* `solve_linear_x(a,b,c)` -- like `solve_linear` but only calculates the `x` value
 
 Useful routines for dealing with binary quadratic forms::
 * `reduce_form(a,b,c)` -- returns the reduced form equivalent to (a,b,c)

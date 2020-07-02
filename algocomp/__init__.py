@@ -3,7 +3,7 @@ from .isqrt import isqrt
 from .ipow import ipow
 from .gcd import (xgcd, gcd, mod_inverse, partial_xgcd)
 from .int_div import (exact_div, divmod_min, mod_min)
-from .solve_linear import solve_linear
+from .solve_linear import (solve_linear_x, solve_linear)
 
 from .bqf import (reduce_form, nudupl)
 from .cube import (print_cube_stats, construct_cube_with_squared_form,
