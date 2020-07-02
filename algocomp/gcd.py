@@ -1,5 +1,6 @@
 
 from .cost_tracking import (routine_tracking_start, routine_tracking_stop)
+from .tracked_number import coerce_int as _int
 
 
 def xgcd(a, b):
@@ -95,6 +96,8 @@ def gcd(a, b):
         a,b = (b%a), a
 
     routine_tracking_stop(tracking)
+    if b < 0:
+        return -b
     return b
 
 
@@ -107,71 +110,70 @@ def mod_inverse(x, M):
 
 def partial_xgcd(a, b, L):
     """
+    Partial Euclidean reduction
     return (u,x,v,y) such that
-      1) u x - v y = a,   with |v| <= L  or  u = 0
+      1) u x + v y = a,   with |v| <= L  or  u = 0
       2) gcd(u,v) = gcd(a,b)
       3) gcd(x,y) = 1
 
-    ---
-    Partial Euclidean reduction:
-    Note that the sign is different that xgcd,
-    to match other libraries like flint, and nudupl literature
+    Note: this uses a positive sign convention like xgcd. This differs from
+    the sign convention in some literature and libraries such as Flint.
 
-    let a0, b0 be the original values of a,b
-    and use as intial values
-        x=1, y=0
+    ---
+    Algorithm
+
+    use as intial values
+        u=a, x=1, v=b, y=0
 
     this means initially we have
     (and as will be shown inductively, this is also the case for the start
     of every loop)
-        x a - y b = a0
-        gcd(a, b) = gcd(a0, b0)
+        u x + v y = a
+        gcd(u, v) = gcd(a, b)
         gcd(x, y) = 1
 
-    loop while a != 0 and |b| > L:
+    loop while u != 0 and |v| > L:
 
-    find q=b//a, r=b%a so that
-        b = q a + r
+    find q=v//u, r=v%u so that
+        v = q u + r
 
     therefore we can get a new equation
-    x a - y (q a + r) = a0
-    (x - q y) a - y r = a0
-    (-y) r - (q y - x) a = a0
+        u x + (q u + r) y = a
+        u (x + q y) + r y = a
+        r y + u (x + q y) = a
 
     using this, new constants can be chosen for the next iteration
-        x' a' - y' b' = a0   <---->   (-y) r - (q y - x) a = a0
+        u' x' + v' y' = a   <---->   (r) (y) + (u) (x + q y) = a
     written out explicitly:
-        x' = -y
-        y' = q y - x
-        a' = r
-        b' = a
-    which can be verified to satisfy the other loop invariants
-        gcd(a', b') = gcd(r, a) = gcd(r + qa, a) = gcd(b, a) = gcd(a0, b0)
-        gcd(x', y') = gcd(-y, q y - x) = gcd(y, x) = 1
+        x' = y
+        y' = x + q y
+        u' = r
+        v' = u
+    which can be verified to preserve the other loop invariants
+        gcd(u', v') = gcd(r, u) = gcd(r + qu, u) = gcd(v, u) = gcd(a, b)
+        gcd(x', y') = gcd(y, x + q y) = gcd(y, x) = 1
 
     repeat loop
 
     Analysis:
-    As |r| < |a| and |r| <= |b|, each iteration reduces |a|
-    and after the first, |a| < |b|, so each iteration after the first
-    must also reduce |b|.
+    As |r| < |u| and |r| <= |v|, each iteration reduces |u|.
+    And after the first step |u| < |v|, so each iteration after the first
+    must also reduce |v|.
 
-    This means eventually we will converge on a=0, unless we exit
-    early because |b| < L (thus "partial" reduction).
+    This means eventually we will converge on u=0, unless we exit
+    early because |v| < L (thus "partial" reduction).
 
-    return the calculated (a,x,b,y) which meet all the required conditions now
+    return the calculated (u,x,v,y) which meet all the required conditions now
     """
     tracking = routine_tracking_start("gcd", a, b)
 
-    a0 = a
-    x, y = 1, 0
-    while a != 0 and abs(b) > L:
-        q, r = divmod(b, a)
-        x, y = -y, q*y - x
-        a, b = r, a
-
-    assert a*x - b*y == a0
+    u, x, v, y = a, 1, b, 0
+    while u != 0 and abs(v) > L:
+        q, r = divmod(v, u)
+        x, y = y, x + q*y
+        u, v = r, u
+    assert _int(u)*_int(x) + _int(v)*_int(y) == a
 
     routine_tracking_stop(tracking)
-    return (a, x, b, y)
+    return (u, x, v, y)
 
