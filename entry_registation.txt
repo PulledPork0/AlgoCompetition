@@ -1,0 +1,8 @@
+
+To register, add to this file the following information:
+1) the git hash of the commit of your git repo to be considered for the contest
+2) a publicly accessible url from which the git repository can be cloned after
+    the contest period ends
+
+===== Registered Entries ======================================
+

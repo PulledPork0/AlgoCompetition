@@ -30,7 +30,9 @@ to get some feedback from the community.
 ... a python file: `entry.py` -- contains code of your algorithm which is compatible with testing by `run_trial.py`
 ... explanation of the algorithm should be supplied (either as comments in the code, or a separate document included in the git repo)
 ... a text file: `prize.txt` -- cryptocoin address(es) where prizes should be sent
-.. Register entry before the contest period ends by submitting a pull request to this github repo with a text file containing:
+.. Register an entry before the contest period ends by submitting a pull
+request to this github repo which adds the following information
+to `entry_registration.txt`:
 ... the git hash of the commit of your git repo to be considered for the contest entry
 ... publicly accessible url from which the git repository can be cloned after the contest period ends
 .. [Optional] a contest entry can be registered without releasing your algorithm details until the contest period ends.
