@@ -2,7 +2,7 @@
 from .tracked_number import coerce_int
 from .solve_linear import *
 from .gcd import (xgcd, gcd, partial_xgcd)
-from .int_div import (exact_div, mod_min)
+from .int_div import exact_div
 from .cube import *
 
 
@@ -34,9 +34,10 @@ def construct_nudupl_cube(A, B, C, L):
     h = B
 
     # solve -bB + fA = C, with minimal |b|
-    b,f = solve_linear(-B,A,C)
-
+    # do not calculate f unless we actually need it
+    b = solve_linear_x(-B,A,C)
     e = b
+
 
     """
     -- now partially reduce the cube
@@ -105,6 +106,7 @@ def construct_nudupl_cube(A, B, C, L):
         #   possible division-by-zero in the calculation below
 
         #print("##### Special case #####, new_b:",new_b)
+        f = exact_div(C + b*B, A)
         return (a,b,c,d,e,f,g,h)
 
     new_a = -x
@@ -117,7 +119,9 @@ def construct_nudupl_cube(A, B, C, L):
     new_h = exact_div(new_f*new_d - C, new_b)
 
     if 0:
-        # debugging
+        # -- debugging info
+
+        f = exact_div(C + b*B, A)
 
         # new_b = b*x - z*A  --->  z = (b*x-new_b)/A
         z = exact_div(b*x - new_b, A)
