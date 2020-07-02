@@ -30,6 +30,7 @@ short) time to get some feedback from the community.
 ... a python file: `entry.py` -- contains code of your algorithm which is compatible with testing by `run_trial.py`
 ... explanation of the algorithm should be supplied (either as comments in the code, or a separate document included in the git repo)
 ... a text file: `prize.txt` -- cryptocoin address(es) where prizes should be sent
+... a `LICENSE` file, placing all source code and documentation in a submission related to the contest into the public domain, or released with an MIT or Apache 2.0 License.
 .. Register an entry before the contest period ends by submitting a pull
 request to this github repo which adds the following information
 to `entry_registration.txt`:
