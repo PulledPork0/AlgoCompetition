@@ -223,7 +223,7 @@ division should be exact, use `exact_div`. The `/` division creates floats
 from integers even if the division is exact.
 * Do not use bit manipulations. Instead strive to do as much possible with
 the basic arithmetic operations and the provided library routines. Bit
-manipulations operators were not defined for the tracked values to strongly
+manipulation operators were not defined for the tracked values to strongly
 encourage this.
 * Do not try to cast an expression or value using int(). This implies you
 expect an intermediate value in some calculation to be a float, which when
@@ -245,18 +245,18 @@ tracking in an assert.
 
 Integer math routines supplied by algocomp::
 * `isqrt(x)` -- integer square root, returns sqrt(x) rounded down to nearest integer
-* `exact_div(a,b)` -- division, but raises exception if b does not divide a
-* `divmod_min(a,b)` -- returns q,r such that `a = q*b + r`, with minimum `|r|`
-* `mod_min(a,b)` -- returns r such that `r = a (mod b)`, with minimum `|r|`
-* `gcd(a,b)` -- returns the greatest common divisor of a and b
-* `xgcd(a,b)` -- returns (g,x,y) such that `a*x + b*y = g = gcd(a,b)`
-* `mod_inverse(x,M)` -- returns a such that `a*x = 1 (mod M)`.
-* `partial_xgcd(a,b,L)` -- returns (u,x,v,y) such that
-.. `u*x - v*y = a`,   with `+|v| <= L+` or `u = 0`
-.. there exists a matrix M such that `+[u v] = [a b] M+`, with `det(M) = 1`
+* `exact_div(a,b)` -- division, but raises exception if `a` is not divisible by `b`
+* `divmod_min(a,b)` -- returns `q,r` such that `a = q*b + r`, with minimum `|r|`
+* `mod_min(a,b)` -- returns `r` such that `r = a (mod b)`, with minimum `|r|`
+* `gcd(a,b)` -- returns the greatest common divisor of `a` and `b`
+* `xgcd(a,b)` -- returns `(g,x,y)` such that `a*x + b*y = g = gcd(a,b)`
+* `mod_inverse(x,M)` -- returns `a` such that `a*x = 1 (mod M)`.
+* `partial_xgcd(a,b,L)` -- returns `(u,x,v,y)` such that
+.. `u*x + v*y = a`,   with `+|v| <= L+` or `u = 0`
+.. there exists a matrix `M` such that `+[u v] = [a b] M+`, with `det(M) = 1`
 .. `gcd(u,v) = gcd(a,b)`
 .. `gcd(x,y) = 1`
-* `solve_linear(a,b,c)` -- returns (x,y) such that `a*x + b*y = c`, with `|x|` minimized
+* `solve_linear(a,b,c)` -- returns `(x,y)` such that `a*x + b*y = c`, with `|x|` minimized
 * `solve_linear_x(a,b,c)` -- like `solve_linear` but only calculates the `x` value
 
 Useful routines for dealing with binary quadratic forms::
@@ -299,7 +299,9 @@ Some details:
 * all unary operations such as negation `-` or `abs()` or `bool()` are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
 * boolean compares are free (unless something is causing large values to have almost identical values, compares of large integers should still be fast)
 * with the same operands `+`, and `-` have the same cost
-* with the same operands `//`, `%`, and `divmod` are all considered a single divisioin and all have the same cost. So if you need both the quotient and remainder, use divmod, that is what it is there for.
+* with the same operands `//`, `%`, and `divmod` are all considered a single
+division and all have the same cost. So if you need both the quotient and
+remainder, use divmod, that is what it is there for.
 
 
 = Useful algebra results
@@ -358,9 +360,10 @@ they must hold for any cube solution.
   e C3 + h A2 = g (B3 + B2)/2
 ....
 
-If given all the tuple values, this is now a system of linear equations for the
-cube values. Of the 24 linear equations, only 6 are linearly independent, so
-the 8 cube values can be solved with 2 freedoms remaining.
+If given values for the tuples (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), this is now
+a system of linear equations for the cube values. Of the 24 linear equations,
+only 6 are linearly independent, so the 8 cube values can be solved with 2
+freedoms remaining.
 
 These freedoms are just from the linear equations not specifying all of the
 original constraints. For example it is clear setting all the cube values to
@@ -378,7 +381,7 @@ The cube equations have some interesting properties.
 === New solution with overall sign flip
 
 Since all the tuple values A1,A2,etc. are a sum of terms "quadratic" in the
-cube values, if we chnage the sign of all the cube values we get another cube
+cube values, if we change the sign of all the cube values we get another cube
 solution with the same tuple values.
 
 === Equivalence Transformations
@@ -386,10 +389,11 @@ solution with the same tuple values.
 Given a cube, there are some simple transformations we can do to the values
 which preserves two of the three tuples, and changes the third in a simple way.
 
-In particular for this subsection, we will look at transformations which 
+In particular for this subsection, we will look at transformations which
 preserve  Tuple1,Tuple2 and only change Tuple3. Given a cube, any new tuple we
-can obtain for Tuple3 is said to be "equivalent" to the original Tuple3.
-The full set of forms related in this way is called an "equivalence class".
+can obtain this way for Tuple3 is said to be "equivalent" to the original
+Tuple3. The full set of forms related in this way is called an "equivalence
+class".
 
 Here is an example transformation that preserves Tuple1, and Tuple2, but
 changes Tuple3 in a simple way.
@@ -447,7 +451,7 @@ second
     |B3'/2  C3' |   |n 1| |B3/2  C3 | |0 1|
 ....
 
-These two manipulations can combined, and repeated, leading to the following
+These two manipulations can be combined, and repeated, leading to the following
 general case
 
 ....
@@ -518,8 +522,8 @@ This value is called the discriminant. As mentioned above, this value is
 important for the existence of solutions given just two tuples. So in what
 follows, let's restrict consideration of tuples to those of some given
 discriminant. For convenience, and to match additional assumptions that are
-given for the inputs to our math puzzle, the discriminant will be taken to be -p where
-p is a prime number.
+given for the inputs to our math puzzle, the discriminant will be taken to
+be -p where p is a prime number.
 
 With this restriction going forward, for any two tuples under consideration
 there will always exist a third which is a composition of those two tuples.
@@ -636,7 +640,7 @@ form compositions. If we can fit that into the cube, we get the third for free.
 In this ultra idealistic case, repeated squaring may not even require an xgcd.
 
 On the other end of the spectrum from idealistic hopes, we know, because the
-algorithm exists (and are included in the contest library), that we can
+algorithms exists (and are included in the contest library), that we can
 construct a cube from scratch with form1 = form2 = anything with a single xgcd.
 
 So inbetween, in the conservative but hopeful case, is that there is some
@@ -674,10 +678,11 @@ to the selected achitectures. Maybe that wasn't the initial intention, but
 the second contest clearly doubled down on this for some reason.
 
 This contest possibly swings too far to the other side. Its setup strongly
-suggests a particular path for improvement. However, the included library
-could be used to form other community led competitions that allows focus
-primarily on algorithm improvements instead of architecture specific math
-libarary improvements.
+suggests a particular path for improvement. However, if you have your own
+ideas for how to possibly better handle the tradeoffs of scoping a contest
+problem, I encourage you to pursue it. Hopefully the included cost tracking
+library could make it easier to form _other_ community or educational
+competitions focusing on high level algorithm improvements.
 
 
 = Reference Material for further reading
@@ -696,5 +701,10 @@ libarary improvements.
 
 = Acknowledgements
 
-inkfish from https://github.com/Chia-Network/vdf-competition.git
+inkfish is from https://github.com/Chia-Network/vdf-competition.git
+
+It is used to generate test files without reference to this contest's library,
+so hopefully provides an independent check of the validity of those answers.
+Their methods for creating a pseudo-random sequence of suitable discriminants
+for contest data was very convenient and was reused here.
 
