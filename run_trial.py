@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from inkfish.classgroup import ClassGroup
 from algocomp import *
 from algocomp.tracked_number import coerce_int as _int
 import importlib
@@ -65,8 +64,7 @@ if __name__ == '__main__':
                 print("FAIL: test {} did not have correct discriminant"
                       "".format(ntest))
             else:
-                form = ClassGroup(A3, B3, C3).reduced()
-                outA, outB, outC = form
+                outA, outB, outC = reduce_form(A3, B3, C3)
                 if outA != A or outB != B or outC != C:
                     print("FAIL: test {} result is incorrect".format(ntest))
                 else:
