@@ -7,9 +7,6 @@ fan of the math puzzle embedded in those contests.
 
 == Contest Rules
 
-The following are suggested rules, and will be finalized after some (hopefully
-short) time to get some feedback from the community.
-
 . Anyone may enter (explicitly including Chia employees), and winner(s) will be awarded prizes pledged by community donors.
 . Contest period for entries ends on August 31th, 2020 at 00:00 UTC.
 . Participants must:
@@ -19,7 +16,7 @@ short) time to get some feedback from the community.
 ... a text file: `prize.txt` -- cryptocoin address(es) where prizes should be sent
 ... a `LICENSE` file, placing all source code and documentation in a submission related to the contest into the public domain, or released with an MIT or Apache 2.0 License.
 .. Register an entry before the contest period ends by submitting a pull
-request to this github repo which adds the following information
+request to the contest github repo https://github.com/PulledPork0/AlgoCompetition which adds the following information
 to `entry_registration.txt`:
 ... the git hash of the commit of your git repo to be considered for the contest entry
 ... publicly accessible url from which the git repository can be cloned after the contest period ends
