@@ -1,0 +1,39 @@
+
+site:
+  title: Algorithm Competition
+  url: http://algorithmcompetition.github.io
+  start_page: doc:contest:overview.adoc
+
+asciidoc:
+  attributes:
+    page-projecturl: 'https://github.com/PulledPork0/AlgoCompetition'
+    page-zipurl: 'https://github.com/PulledPork0/AlgoCompetition/archive/master.zip'
+  extensions:
+  - '@djencks/asciidoctor-mathjax'
+
+content:
+  edit_url: false # also needs environment CI=true, otherwise leaks local path
+  sources:
+  - url: ./../
+    branches: HEAD
+    start_path: site-docs
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files:
+  - path: partials/header-content.hbs # changed header pieces/links
+    contents: ./ui-tweaks/header-content.hbs
+  - path: partials/nav-explore.hbs # changed to not display component version
+    contents: ./ui-tweaks/nav-explore.hbs
+  - path: css/site.css  # changed to turn off auto hyphenation
+    contents: ./ui-tweaks/site.css
+  - path: ui.yml # hack to produce a .nojekyll file for github pages
+    contents: |
+      static_files: [ .nojekyll ]
+  - path: .nojekyll
+
+output:
+  clean: true
+

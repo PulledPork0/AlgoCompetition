@@ -1,0 +1,9 @@
+* xref:overview.adoc[Overview]
+* xref:quickstart.adoc[Quick Start]
+* xref:programming-details.adoc[Programming Details]
+* xref:algebra-results.adoc[Some Useful Algebra Results]
+* xref:skim-math.adoc[Skim Some Deeper Math]
+* xref:motivation.adoc[Motivation]
+* xref:references.adoc[References]
+* xref:rules.adoc[Contest Rules (and registration details)]
+

@@ -1,0 +1,37 @@
+
+= Quick start
+
+The code for the contest can be obtained from the
+https://github.com/PulledPork0/AlgoCompetition[Github project page]
+....
+$ git clone https://github.com/PulledPork0/AlgoCompetition.git
+....
+
+The supplied `run_trial.py` is the scoring program, and you can test it
+out on one of the supplied examples: `example.py`
+....
+$ ./run_trial.py example
+....
+
+If all the tests pass, the calculated score is listed on the
+line `total cost`, which is followed by
+a breakdown of where the computational cost is ocurring
+....
+total cost: 5356404348 (5.36e+09)
+basic operation counts:
+    add:2.73e+05, sub:1.22e+06, mul:1.01e+06, div:4.11e+05
+basic operation costs:
+    add:1.48e+07, sub:6.57e+07, mul:8.68e+08, div:4.41e+09
+routine counts:
+    gcd:1.00e+04, reduce_form:1.00e+04
+routine costs (percent of total):
+    gcd:1.25e+09 (23.4%), reduce_form:3.51e+09 (65.6%)
+....
+
+Check out `example.py` and `example2.py` for two example solutions.
+
+Contest registration and submissions will be handled using git repositories.
+So once you have a working solution, follow the directions in
+xref:rules.adoc['Contest Rules']
+to register and submit your entry.
+

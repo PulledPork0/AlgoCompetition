@@ -1,0 +1,218 @@
+
+= Skim some deeper math details
+
+This is a quick skim, which introduces some concepts and states quite a few
+properties without proof. Hopefully it at least provides awareness of some
+key topics that can be followed up on if you are curious.
+
+
+== Binary quadratic forms
+
+What have been refered to as "Tuples" like stem:[(A_1,B_1,C_1)], can be viewed
+as binary quadratic forms, which are functions of two variables like so:
+[stem]
+++++
+f_1(x,y) = A_1 x^2 + B_1 xy + C_1 y^2
+++++
+
+It turns out that when multiplying two of these objects, under some
+circumstances it is possible to obtain a third:
+
+[stem]
+++++
+f_1(r,s) f_2(t,u) = f_3(x,y)
+++++
+
+with _x, y_ written as a bilinear combination of _r,s,t,u_.
+
+This is a rich and interesting subject, but it turns out the cube equations
+capture this. Indeed, given a cube of integers, the corresponding
+stem:[(A_1,B_1,C_1),] 
+stem:[(A_2,B_2,C_2),] and
+stem:[(A_3,B_3,C_3)] 
+give three binary quadratic forms with the above
+relationship _and_ the bilinear coefficients are the integer values on the
+cube corners.
+
+To emphasize this, the concepts of composition and equivalence can be defined
+and explored solely from the viewpoint of solutions to the cube equations.
+
+But first, a closer look at how the forms relate to the cube values:
+
+== Cube faces
+
+The cube of integers can be sliced three different ways into a pair of faces.
+And the three choices here give the three different forms.
+
+This was first noted by Bhargava, and these objects are often called
+Bhargava cubes.
+
+image::cube_faces.png[cube with labeled faces]
+
+[stem]
+++++
+f_1(x,y) = - det([[a,b],[c,d]]x + [[e,f],[g,h]] y) = A_1 x^2 + B_1 xy + C_1 y^2
+
+f_2(x,y) = - det([[a,c],[e,g]]x + [[b,d],[f,h]] y) = A_2 x^2 + B_2 xy + C_2 y^2
+
+f_3(x,y) = - det([[a,e],[b,f]]x + [[c,g],[d,h]] y) = A_3 x^2 + B_3 xy + C_3 y^2
+++++
+where the orientation of the matrices is chosen to fix a,h in the upper-left
+and lower-right respectively.
+
+From this, the transformations seen previously should be clearer now. Since
+stem:[det(MN) = det(M) det(N)], multiplying both faces of a form by a 
+matrix with determinant 1 will not change the value of the determinant;
+it will not change the form.
+
+Looking at composition in terms of forms:
+[stem]
+++++
+f_1(r,s) f_2(t,u) = f_3(x,y)
+++++
+there is an additional freedom not discussed above.
+_x,y_ (in terms of _r,s,t,u_) can be swapped if (A3,B3,C3) is reversed.
+It turns out one choice is more natural, as it leads to the composition
+on the equivalence class of the forms, being a mathematical group.
+
+The cube equations, due to the symmetry, treat all three forms the same.
+While the "form composition" equation, breaks this symmetry with
+"two in, one out". What is going on here is that the cube relation is more
+naturally stated as the composition of all three forms is the "identity" form
+in this group.
+[stem]
+++++
+f_1(r,s) f_2(t,u) f_3(v,w) = I(x,y)
+++++
+where _I(x,y)_ is the identity form. The cube therefore fixes the natural
+order of (A3,B3,C3).
+
+It turns out that in the group, that (C3,B3,A3) is the inverse of (A3,B3,C3);
+that is they compose to the identity form. Therefore we can go from
+`form1 form2 form3 = Id` to `form1 form2 = inverse_form3`.
+
+So to break the symmetry of the cube equations, to put it in terms of "two in,
+one out", we just need to reverse the order of one of the form's coefficients.
+
+Now returning to looking solutions to the cube equations, and trying to extract
+the main concepts purely from properties of those equations.
+
+== Composition
+
+It can be proven that if given (A2,B2,C2) and (A3,B3,C3) such that
+
+* the values are relatively prime `gcd(A2,B2,C2) = gcd(A3,B3,C3) = 1`
+* and `B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3`
+
+then necessarily
+
+* there exists a solution to the cube equations
+* the solution is not unique, but are related in a simple way that will be explored shortly.
+
+This can be use to define the following property: define (C1,B1,A1) to be the
+"composition" of the tuples (A2,B2,C2), (A3,B3,C3) if such a cube exists.
+
+Due to symmetry of the cube and the equations, this can also be said for the
+other tuples. Given a solution, we can also say (C2,B2,A2) is a "composition"
+of the tuples (A1,B1,C1), (A3,B3,C3).  And (C3,B3,A3) is a "composition" of
+the tuples (A1,B1,C1), (A2,B2,C2).
+
+By expanding the tuple values in terms of the cube values, it can be checked
+that for any solution:
+....
+  B1^2 - 4 A1 C1 = B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3
+....
+This value is called the discriminant. As mentioned above, this value is
+important for the existence of solutions given just two tuples. So in what
+follows, let's restrict consideration of tuples to those of some given
+discriminant. For convenience, and to match additional assumptions that are
+given for the inputs to our math puzzle, the discriminant will be taken to
+be -p where p is a prime number.
+
+With this restriction going forward, for any two tuples under consideration
+there will always exist a third which is a composition of those two tuples.
+
+== Equivalence
+
+Define two tuples (A,B,C) and (A',B',C') to be "equivalent" if there exists two
+other tuples T1 and T2 such that (A,B,C) is a composition of T1
+and T2, and (A',B',C') is also a composition of T1 and T2. We will
+denote that two tuples are equivalent by writing tuple1 ~ tuple2.
+
+
+== Composition respects equivalence
+
+The composition property respects the equivalence relation in the following
+way. If T1 ~ T2 and T3 ~ T4, then any tuple which is a
+composition of T1 and T3 is equivalent to any tuple which is a
+composition of T2 and T4.
+
+We can rewrite this more cleanly if we define "*" between tuples to mean
+composition, so that (tuple1 * tuple2) as an operation results in some tuple
+such that it is the composition of tuple1 and tuple2. The previous result can
+then be written:
+....
+    if  T1 ~ T2  and  T3 ~ T4,  then  (T1 * T3) ~ (T2 * T4)
+....
+
+== Further properties of composition
+
+It turns out that this operation has nice properties.
+
+* commutative: `(T1 * T2) ~ (T2 * T1)`
+* associative: `(T1 * (T2 * T3)) ~ ((T1 * T2) * T3)`
+
+Reminding that we are restricting to considering the set of tuples with a
+particular discriminant, we can further say
+
+* closed: for any two tuple T1,T2 in this set, there exists a T3 which is a composition of T1 * T2.
+* identity: there exists a tuple T_identity in this set such that for all
+forms T2, (T_identity * T2) ~ T2.
+* inverse: for every tuple T1 in this set, there exists a tuple T2 such that
+(T1 * T2) ~ T_identity.
+
+
+== composition of cubes
+
+Now consider two cubes given by the tuples T1a,T1b,T1c and T2a,T2b,T2c
+respectively. Then we have:
+
+....
+cube1: T1a ~ T1b * T1c
+cube2: T2a ~ T2b * T2c
+
+There exist tuples given by the relations
+ T3a ~ T1a * T2a
+ T3b ~ T1b * T2b
+ T3c ~ T1c * T2c
+
+Which from above therefore have the relationship
+ T3a ~ T3b * T3c
+....
+
+and so composition of tuples, along with existence of a cube for any
+three tuples that satisfy a composition relation, means that given two
+cubes a third exists which is a "composition" of two other cubes.
+
+This bears repeating: the cube equations not only lead us to composition of
+forms, but it shows these must exist a composition of entire cubes.
+
+It is this cube composition which the algorithm contest involves.
+
+
+== Function to create, viewed as composition of cubes
+
+In the competition, your function will be given (a,b,c,d,e,f,g,h)
+specifying a cube, with the guarantee that the first two tuples are equal
+(A1,B1,C1) = (A2,B2,C2).
+
+Using cube composition, a new cube must be calculated such that
+
+* the new cube is the old cube composed with itself
+* the new cube also has the first two tuples equal (A1',B1',C1')=(A2',B2',C2')
+
+Note:
+....
+(A3,B3,C3) ~ (A1,B1,C1) * (A2,B2,C2) ~ (A1,B1,C1) * (A1,B1,C1) ~ (A1',B1',C1')
+....
+

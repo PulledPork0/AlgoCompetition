@@ -1,0 +1,187 @@
+
+= Some useful algebra results
+
+Starting with the original 9 cube equations, for some purposes it is
+convenient to expand them into the following 12 equations.
+....
+  bc - ad = A1
+  ce - ag = A2
+  be - af = A3
+  cf - ah = (B1 + B2)/2
+  bg - de = (B1 - B2)/2
+  bg - ah = (B1 + B3)/2
+  cf - de = (B1 - B3)/2
+  de - ah = (B2 + B3)/2
+  cf - bg = (B2 - B3)/2
+  fg - eh = C1
+  df - bh = C2
+  dg - ch = C3
+....
+
+== Equations linear in the cube values
+
+The above 12 equations can then be manipulated to form relationships that
+are linear in the cube values. As they are derived from the cube equations,
+they must hold for any cube solution.
+....
+  a C3 + g A1 = c (B1 + B3)/2
+  a C1 + g A3 = e (B1 + B3)/2
+  b C3 + h A1 = d (B1 + B3)/2
+  b C1 + h A3 = f (B1 + B3)/2
+
+  e A1 - c A3 = a (B1 - B3)/2
+  f A1 - d A3 = b (B1 - B3)/2
+  c C1 - e C3 = g (B1 - B3)/2
+  d C1 - f C3 = h (B1 - B3)/2
+
+  e A1 - b A2 = a (B1 - B2)/2
+  g A1 - d A2 = c (B1 - B2)/2
+  b C1 - e C2 = f (B1 - B2)/2
+  d C1 - g C2 = h (B1 - B2)/2
+
+  a C2 + f A1 = b (B1 + B2)/2
+  c C2 + h A1 = d (B1 + B2)/2
+  a C1 + f A2 = e (B1 + B2)/2
+  c C1 + h A2 = g (B1 + B2)/2
+
+  b A2 - c A3 = a (B2 - B3)/2
+  f A2 - g A3 = e (B2 - B3)/2
+  c C2 - b C3 = d (B2 - B3)/2
+  g C2 - f C3 = h (B2 - B3)/2
+
+  d A3 + a C2 = b (B3 + B2)/2
+  a C3 + d A2 = c (B3 + B2)/2
+  h A3 + e C2 = f (B3 + B2)/2
+  e C3 + h A2 = g (B3 + B2)/2
+....
+
+If given values for the tuples (A1,B1,C1), (A2,B2,C2), (A3,B3,C3), this is now
+a system of linear equations for the cube values. Of the 24 linear equations,
+only 6 are linearly independent, so the 8 cube values can be solved with 2
+freedoms remaining.
+
+These freedoms are just from the linear equations not specifying all of the
+original constraints. For example it is clear setting all the cube values to
+zero would satisfy the linear equations, but not the original equations.
+
+So choosing some non-zero tuple value, the original quadratic equation
+can be used to constrain the final 2 freedoms (this constraint looks like
+a quadratic form equal to a constant). Therefore this gives a unique solution
+up to an overall sign.
+
+== Properties of solutions to the cube equations
+
+The cube equations have some interesting properties.
+
+=== New solution with overall sign flip
+
+Since all the tuple values A1,A2,etc. are a sum of terms "quadratic" in the
+cube values, if we change the sign of all the cube values we get another cube
+solution with the same tuple values.
+
+=== Equivalence Transformations
+
+Given a cube, there are some simple transformations we can do to the values
+which preserves two of the three tuples, and changes the third in a simple way.
+
+In particular for this subsection, we will look at transformations which
+preserve  Tuple1,Tuple2 and only change Tuple3. Given a cube, any new tuple we
+can obtain this way for Tuple3 is said to be "equivalent" to the original
+Tuple3. The full set of forms related in this way is called an "equivalence
+class".
+
+Here is an example transformation that preserves Tuple1, and Tuple2, but
+changes Tuple3 in a simple way.
+....
+swap the values according to
+    (a',b',c',d', e',f',g',h') = (c,d,-a,-b, g,h,-e,-f)
+
+A1' = b' c' - a' d' = d (-a) - c (-b) = bc - ad = A1
+A2' = c' e' - a' g' = (-a) g - c (-e) = ce - ag = A2
+A3' = b' e' - a' f' = d g - c h = C3
+and so on...
+
+it is found that
+    A1',B1',C1' = A1,B1,C1
+    A2',B2',C2' = A2,B2,C2
+    A3',B3',C3' = C3,-B3,A3
+....
+
+another operation preserving Tuple1,Tuple2 and changing Tuple3 is
+
+....
+given any integer n
+    (a',b',c',d', e',f',g',h') = (a,b,c+an,d+bn, e,f,g+en,h+fn)
+
+C1' = f' g' - e' h' = f (g+en) - e (h+fn) = fg - eh = C1
+C2' = d' f' - b' h' = (d+bn) f - b (h+fn) = df - bh = C2
+C3' = d' g' - c' h' = (d+bn)(g+en) - (c+an)(h+fn)
+                    = (dg-ch) + n(-ah + bg - cf + de) + n^2(be - af)
+                    = C3 + n B3 + n^2 A3
+and so on...
+
+it is found that
+    A1',B1',C1' = A1,B1,C1
+    A2',B2',C2' = A2,B2,C2
+    A3',B3',C3' = A3, B3 + 2n A3, C3 + n B3 + n^2 A3
+....
+
+The previous two manipulations can be rephrased nicely in the language
+of linear algebra
+
+....
+first
+    |a' b' e' f'| = | 0 1| |a b e f|
+    |c' d' g' h'|   |-1 0| |c d g h|
+
+    | A3'  B3'/2| = | 0 1| | A3  B3/2| |0 -1|
+    |B3'/2  C3' |   |-1 0| |B3/2  C3 | |1  0|
+
+
+second
+    |a' b' e' f'| = |1 0| |a b e f|
+    |c' d' g' h'|   |n 1| |c d g h|
+
+    | A3'  B3'/2| = |1 0| | A3  B3/2| |1 n|
+    |B3'/2  C3' |   |n 1| |B3/2  C3 | |0 1|
+....
+
+These two manipulations can be combined, and repeated, leading to the following
+general case
+
+....
+modify with any matrix such that ru - st = 1
+    |a' b' e' f'| = |r s| |a b e f|
+    |c' d' g' h'|   |t u| |c d g h|
+
+    | A3'  B3'/2| = |r s| | A3  B3/2| |r t|
+    |B3'/2  C3' |   |t u| |B3/2  C3 | |s u|
+....
+
+This freedom in the tuple is precisely the freedom in the
+equivalance relation mentioned above.
+
+A routine to do a general matrix transformation on the cube like this
+is provided in the algocomp library: `transform_cube(cube, r,s,t,u)`.
+
+
+=== Preserving Tuple1,Tuple3 or Tuple2,Tuple3
+
+By symmetry of the cube and equations, similar manipulations can be
+done which only change Tuple2 or only change Tuple1.
+
+
+== Algebra details specific to the case of interest
+
+From the constraint the discriminant is negative a prime number p, and the
+following constraint for any cube solution:
+....
+    B1^2 - 4 A1 C1 = B2^2 - 4 A2 C2 = B3^2 - 4 A3 C3 = - p
+....
+We can see that no tuple value can be zero, as that would require p to have
+a non-trivial factor.
+
+Similarly, we can see that gcd(B1,A1) = gcd(B1,C1) = 1, and likewise for the
+other two forms.
+
+

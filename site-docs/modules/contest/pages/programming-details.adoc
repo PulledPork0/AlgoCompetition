@@ -1,0 +1,161 @@
+
+= Programming details
+:page-toclevels: 5
+
+== User supplied algorithm
+
+A algorithm entry must define:
+
+* a function `run(cube, info)`
+** parameter cube: will be a tuple of 8 integers (or integer like objects)
+representing a,b,c,d,e,f,g,h in the cube equations.
+** parameter info: the info object created by the setup routine
+** returns new_cube: a new tuple of 8 integer values which meet the algebraic
+constraints of the algorithm which were described earlier.
+
+An algorithm entry may optionally define:
+
+* a function `setup(discriminant)`
+** parameter discriminant: an integer (or integer like object)
+** should return (cube, info)
+*** cube: the initial cube constructed so (A1,B1,C1) = (A2,B2,C2) = (2, 1, (1-disc)//8)
+*** info: any object you wish which will be passed onto 'run' for convenience.
+Its intended purpose is to hold values that only need to be calculated once at
+startup, or to pass possibly useful internal values from a run calculation to
+the next step.
+
+If no setup function is supplied a default setup routine will be run during
+tesing. The default setup creates the initial cube for you, and info is just
+an empty dictionary object that 'run' can shove internal values into if it
+wants.
+
+It is strongly recommended to take a look at the supplied
+`example.py` and `example2.py`.
+
+== Contents of this repo
+
+....
+run_trial.py -- Used to test an algorithm entry.
+                Run without arguments to see the options.
+
+example.py -- example algorithm, which just supplies a run function
+example2.py -- example algorithm, which also supplies a custom setup function
+               for caching some calculated values for reuse
+
+test16.txt -- a small test file with bitsize=16,
+              useful for quickly verifying an algorithm is working
+
+test128.txt -- a longer test files with bitsize=128
+test2048.txt -- a test file with bitsize=2048
+
+create_test_file.py -- Used to create new test sets with pre-computed answers.
+                       Run without arguments to see the options.
+
+algocomp/  -- contest library
+inkfish/   -- library used create_test_file, not needed for user entries
+site-docs/ -- antora + asciidoc files for this documentation
+....
+
+== Provided code and contest library
+
+The algocomp library defines a class TrackedNumber which for the most part
+can be treated like an integer. This handles cost tracking of operations
+behind the scenes. Ideally, the user never needs to deal with this directly or
+even be aware which variables are actually integers vs. TrackedNumbers.
+
+=== Supported operations
+* unary: `+`, `-`, `abs()`
+* bool tests: `bool()`, `==`, `>=`, `>`, `+<=+`, `<`, `!=`
+* basic arithmetic: `+`, `-`, `*`, `%`, `divmod`, `//` (integer floor division)
+* power: `+**+` (however, as this needs to do extra checks, it is recommended things like `+x**2+` are just written explicitly as `x*x`)
+
+=== A list of "Do Nots"
+* Do not use assignment operators. Instead of writing "a += b" explicitly
+write it out as "a = a + b". This is necessary to allow promotion of ints
+to tracked values for cost tracking. It also prevents aliasing issues.
+* Do not use `/` for division. Instead use `//`, or if you want to denote the
+division should be exact, use `exact_div`. The `/` division creates floats
+from integers even if the division is exact.
+* Do not use bit manipulations. Instead strive to do as much possible with
+the basic arithmetic operations and the provided library routines. Bit
+manipulation operators were not defined for the tracked values to strongly
+encourage this.
+* Do not try to cast an expression or value using int(). This implies you
+expect an intermediate value in some calculation to be a float, which when
+working with large ints means a lot of precision was just lost. So this is
+an indicator of something going wrong. Furthermore, allowing this would also
+strip any cost tracking from a value, so this was explicitly not included
+as a supported operation, to prevent anyone from accidentally doing this.
+* Do not try to extract the internal int value from a tracked object, or
+directly manipulate the int value inside a tracked object. This would
+evade cost tracking.
+** one exception is when you want to do a sanity check assert with a small
+calculation. You can import
++
+  from algocomp.tracked_number.coerce_int as coerce_int
++
+and then use coerce_int to strip values down to an int to avoid the cost
+tracking in an assert.
+
+
+=== Integer math routines
+* `isqrt(x)` -- integer square root, returns the square-root of `x` rounded down to nearest integer
+* `exact_div(a,b)` -- division, but raises exception if `a` is not divisible by `b`
+* `divmod_min(a,b)` -- returns `q,r` such that `a = q*b + r`, with minimum `|r|`
+* `mod_min(a,b)` -- returns `r` such that `r = a (mod b)`, with minimum `|r|`
+* `gcd(a,b)` -- returns the greatest common divisor of `a` and `b`
+* `xgcd(a,b)` -- returns `(g,x,y)` such that `a*x + b*y = g = gcd(a,b)`
+* `mod_inverse(x,M)` -- returns `a` such that `a*x = 1 (mod M)`.
+* `partial_xgcd(a,b,L)` -- returns `(u,x,v,y)` such that
+** `u*x + v*y = a`,   with `+|v| <= L+` or `u = 0`
+** there exists a matrix `M` such that `+[u v] = [a b] M+`, with `det(M) = 1`
+** `gcd(u,v) = gcd(a,b)`
+** `gcd(x,y) = 1`
+* `solve_linear(a,b,c)` -- returns `(x,y)` such that `a*x + b*y = c`, with `|x|` minimized
+* `solve_linear_x(a,b,c)` -- like `solve_linear` but only calculates the `x` value
+
+=== Binary quadratic form routines
+* `reduce_form(a,b,c)` -- returns the reduced form equivalent to (a,b,c)
+* `nudupl(a,b,c,L=None)` -- returns a reduced form (A,B,C) that
+is the squared composite form of (a,b,c), the parameter L is a
+tuning parameter for partial reduction based on the discriminant
+(if not supplied, it is calculated from a,b,c).
+
+=== Cube routines
+* a cube is passed as a tuple of 8 values
+* `transform_cube(cube, r,s,t,u)` -- applies a matrix transformation to a cube,
+which preserves (A1,B1,C1) and (A2,B2,C2), but does an equivalence
+transformation on (A3,B3,C3)
+* `print_cube_stats(cube)` -- debug print details about cube values and forms
+
+== Cost calculations
+
+The actual cost values have no explicit meaning.
+
+Costs were assigned to the basic arithmetic operations, and then the cost of
+all other routines are determined based on use of these operations.
+
+The intention was to make the cost of `div > mul > add,sub` in such a way that
+there are no silly/hacky incentives to unroll muls into a huge loop of adds,
+or divs as subtracts, etc.
+The ultimate goal is to have the relative costs reasonable enough that people
+write the algorithms naturally, and then for them to be essentially ranked
+by the usage of (div, mul, add+sub).
+
+Constants in the code are still just ordinary ints, and are promoted to cost
+tracked numbers when an operation involves them with a cost tracked variable.
+This is a necessity due to how it was decided to handle cost tracking.
+Furthermore, most constants in the algorithms will just be small, such
+as 0, 1, 2, or 4. And the costs only remain untracked while they operate with
+other ints.
+
+Some details:
+
+* arithmetic operations cost more with larger operands
+* all unary operations such as negation `-` or `abs()` or `bool()` are free (as the usual way of storing large integers makes manipulating the sign, or checking if non-zero, really cheap)
+* boolean compares are free (unless something is causing large values to have almost identical values, compares of large integers should still be fast)
+* with the same operands `+`, and `-` have the same cost
+* with the same operands `//`, `%`, and `divmod` are all considered a single
+division and all have the same cost. So if you need both the quotient and
+remainder, use divmod, that is what it is there for.
+

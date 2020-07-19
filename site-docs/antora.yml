@@ -1,0 +1,7 @@
+name: doc
+title: Documentation
+version: master
+start_page: contest:overview.adoc
+nav:
+- modules/contest/nav.adoc
+

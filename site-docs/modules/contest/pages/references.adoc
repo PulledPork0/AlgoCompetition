@@ -1,0 +1,24 @@
+
+= Reference Material
+
+* solving linear integer equations, ax + by = c
+** wikipedia: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm[Extended Euclidean algorithm]
+** wikipedia: https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity[Bezout's identity]
+** textbook style discussion of solutions, http://gauss.math.luc.edu/greicius/Math201/Fall2012/Lectures/linear-diophantine.article.pdf[pdf]
+* binary quadratic forms
+** wikipedia: https://en.wikipedia.org/wiki/Binary_quadratic_form[binary quadratic forms]
+** introduction by Lipa Long from Chia Network, https://github.com/Chia-Network/vdf-competition/blob/master/classgroups.pdf[classgroups.pdf]
+* Bhargava cubes
+** wikipedia: https://en.wikipedia.org/wiki/Bhargava_cube[Bhargava cubes]
+** original article (math jargon heavy) by Bhargava, _"Higher composition laws I: A new view on Gauss composition, and quadratic generalizations"_, https://annals.math.princeton.edu/wp-content/uploads/annals-v159-n1-p03.pdf[pdf]
+
+
+== Acknowledgements
+
+inkfish is from https://github.com/Chia-Network/vdf-competition.git
+
+It is used to generate test files without reference to this contest's library,
+so hopefully provides an independent check of the validity of those answers.
+Their methods for creating a pseudo-random sequence of suitable discriminants
+for contest data was very convenient and was reused here.
+

@@ -1,0 +1,107 @@
+= Announcing the Summer 2020 Algorithm Competition and Prizes
+:stem:
+
+[.left]
+image::cube.png[cube with labelled corners]
+
+This algorithm competition allows programmers and math puzzle enthusiasts to
+compete by writing an algorithm in python to solve a math puzzle using as
+little "computational cost" as possible.
+
+A python utility is supplied which allows anyone to easily test their
+algorithm to verify its correctness as well as have its computational cost
+calculated with some example inputs.
+
+The contest ends on August 31, 2020. The submissions will then be
+officially tested and the entry which uses the least amount of computational
+cost to solve some pre-selected instances of the puzzle will be awarded the
+grand prize (see constest rules for details).
+
+The current prize pool is 2 ETH (approximately $450 USD).
+
+== The main puzzle
+
+This contest's puzzle is inspired by part of a cryptographic operation used
+by http://chia.net[Chia] in a 'proof of time' for their cryptocoin.
+This is a fascinating subject which you can read more about on their site.
+However, this contest will not require any knowledge on such proofs.
+
+The contest problem can be approached with basic algebra skills supplemented
+with knowledge of how to solve linear equations involving integers.
+
+What follows is an algebra description of the problem, which skips the deeper
+math. For those wanting to explore the details themselves, there is a short
+introduction in this document and a reference section at the end with
+links to some helpful material.
+
+=== The puzzle setup
+
+Consider a cube with integers on each corner,
+and the values labelled stem:[a, b, c, d, e, f, g, h].
+
+Associated with these 8 cube values are three tuples of values
+stem:[(A_1,B_1,C_1)], stem:[(A_2,B_2,C_2)], stem:[(A_3,B_3,C_3)],
+given by what will be referred to as the *_"cube equations"_*:
+
+[latexmath]
+++++
+\begin{align}
+    A_1 &= bc - ad \\
+    B_1 &= -ah + bg + cf - de \\
+    C_1 &= fg - eh \\
+        & \\
+    A_2 &= ce - ag \\
+    B_2 &= -ah - bg + cf + de \\
+    C_2 &= df - bh \\
+        &  \\
+    A_3 &= be - af \\
+    B_3 &= -ah + bg - cf + de\\
+    C_3 &= dg - ch \\
+\end{align}
+++++
+
+Given any cube values stem:[a,b,c,d,e,f,g,h], it is clear that the tuple values
+stem:[A_1,A_2], etc. are uniquely determined.
+
+What is not obvious from this, is that given any tuple values
+stem:[(A_1,B_1,C_1),] stem:[(A_2,B_2,C_2),] stem:[(A_3,B_3,C_3),]
+if there is a solution, the cube values
+stem:[a,b,c,d,e,f,g,h] are uniquely deteremined up to an overall sign.
+(A sketch of a proof is provided in xref:algebra-results.adoc['Useful algebra results'].)
+
+So up to an overall sign, a cube can be uniquely referred to by either the
+eight corner values or the three tuples.
+
+=== Algorithm to create
+
+In the competition, the goal is to write a python function which will take as
+input stem:[(a,b,c,d,e,f,g,h)] specifying a cube, with the following additional
+guarantees that may make the algebra easier:
+
+* the first two tuples are equal stem:[(A_1,B_1,C_1) = (A_2,B_2,C_2)]
+* stem:[B_1^2 - 4 A_1 C_1 = B_2^2 - 4 A_2 C_2 = B_3^2 - 4 A_3 C_3 = -p],
+where stem:[p] is a prime and stem:[p -= 7 (mod 8)].
+
+The function must then calculate and return new cube values
+latexmath:[(a',b',c',d',e',f',g',h')] such that
+[latexmath]
+++++
+(A'_1,B'_1,C'_1) = (A'_2,B'_2,C'_2) \sim (A_3,B_3,C_3)
+++++
+with as little computational cost as possible.
+
+This function will be tested by giving it an initial cube and then repeated
+application of the function on its own output. So it is also advantageous to
+keep the size of the integers in your cube solution from getting larger each
+time the function is called.
+
+(As discussed in the xref:skim-math.adoc['Skim Some Deeper Math'] section,
+the latexmath:[\sim] in the above equation is
+referring to an equivalence relation that gives more freedom in the solution
+if desired. The details of this freedom is shown explicitly in
+xref:algebra-results.adoc#_equivalence_transformations['Equivalence tranformations'].
+While this extra freedom may be helpful,
+pursing those details is not strictly required, and replacing the
+latexmath:[\sim] with a normal stem:[=] in that equation would still
+give acceptible solutions.)
+
