@@ -19,16 +19,22 @@ Summary:
 |45371130995225
 |===
 
-Details of the contest runs can be found in the `result.txt` file under each
-algorithm in the results folder. The winning entry rewrote one of the library
-routines, which has been pulled out to have the entry all fit in one file. It
-has been verified this does not affect the calculated computational cost.
+The test seed and test values for the competition trials can be found in
+`contest.txt`.  Details of the individual contest runs can be found in the
+`result.txt` file under each algorithm in the results folder.
 
-Their improvement was to only do at most, one round of reduction on the result
-from the nudupl cube. Usually this is all that is needed, and apparrently
+The winning entry rewrote one of the library routines, but since it changed
+a routine that run_trial itself needed (and also to make it more convenient
+for people to read their entry), I pulled out their changes to the library and
+combined it with their entry code, thus only needing one file now.
+I verified these modifications did not change the output of their
+algorithm, and the computational cost matches that of their original entry.
+
+Their improvement was to only do, at most, one round of reduction on the result
+from the nudupl cube. Usually this is all that is needed, and apparently
 any additional effort is not worth it on average.
 
-Included with their entry is a pdf providing and overview of the math concepts
-and a describing their ideas for possible further improvements:
-https://raw.githubusercontent.com/PulledPork0/AlgoCompetition/master/results/jcollinscastro/Bhargava_s_cubes.pdf
+Included with their entry is a pdf providing an overview of the math concepts
+and describing their ideas for possible further improvements:
+https://github.com/PulledPork0/AlgoCompetition/blob/master/results/jcollinscastro/Bhargava_s_cubes.pdf
 
