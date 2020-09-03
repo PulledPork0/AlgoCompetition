@@ -31,7 +31,8 @@ I verified these modifications did not change the output of their
 algorithm, and the computational cost matches that of their original entry.
 
 Their improvement was to only do, at most, one round of reduction on the result
-from the nudupl cube. Usually this is all that is needed, and apparently
+from the nudupl cube. Often this is all that is needed to fully reduce the
+form, but even in the case the resulting form is not fully reduced, apparently
 any additional effort is not worth it on average.
 
 Included with their entry is a pdf providing an overview of the math concepts

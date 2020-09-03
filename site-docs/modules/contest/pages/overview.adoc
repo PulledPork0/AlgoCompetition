@@ -1,6 +1,13 @@
 = Announcing the Summer 2020 Algorithm Competition and Prizes
 :stem:
 
+---
+
+NOTE: This competition ended. The results are available here:
+https://github.com/PulledPork0/AlgoCompetition/tree/master/results
+
+---
+
 [.left]
 image::cube.png[cube with labelled corners]
 
