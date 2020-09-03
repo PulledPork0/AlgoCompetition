@@ -1,0 +1,34 @@
+
+The winner of the competition is the entry available here:
+https://github.com/jcollinscastro/Summer2020algContest
+
+Summary:
+
+[%header,cols=2*] 
+|===
+|algorithm
+|total computation cost
+
+|example
+|97560679391152
+
+|example2
+|45376903103575
+
+|jcollinscastro
+|45371130995225
+|===
+
+Details of the contest runs can be found in the `result.txt` file under each
+algorithm in the results folder. The winning entry rewrote one of the library
+routines, which has been pulled out to have the entry all fit in one file. It
+has been verified this does not affect the calculated computational cost.
+
+Their improvement was to only do at most, one round of reduction on the result
+from the nudupl cube. Usually this is all that is needed, and apparrently
+any additional effort is not worth it on average.
+
+Included with their entry is a pdf providing and overview of the math concepts
+and a describing their ideas for possible further improvements:
+https://raw.githubusercontent.com/PulledPork0/AlgoCompetition/master/results/jcollinscastro/Bhargava_s_cubes.pdf
+

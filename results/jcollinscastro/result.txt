@@ -1,0 +1,114 @@
+Description: bitsize:2048 rstep:1000 ntest:100
+Seed: 'QsGJYRY8WjnYDQ7Y4sErB4bN'
+PASS: test 1 passed with cost 453783610554
+PASS: test 2 passed with cost 452869307718
+PASS: test 3 passed with cost 454199614421
+PASS: test 4 passed with cost 453719902720
+PASS: test 5 passed with cost 454451689105
+PASS: test 6 passed with cost 453139370625
+PASS: test 7 passed with cost 454090836264
+PASS: test 8 passed with cost 453426815742
+PASS: test 9 passed with cost 454272086896
+PASS: test 10 passed with cost 453750473525
+PASS: test 11 passed with cost 453812523252
+PASS: test 12 passed with cost 454021455817
+PASS: test 13 passed with cost 452607879012
+PASS: test 14 passed with cost 454122788694
+PASS: test 15 passed with cost 453695013807
+PASS: test 16 passed with cost 453978849162
+PASS: test 17 passed with cost 453186852600
+PASS: test 18 passed with cost 454562264089
+PASS: test 19 passed with cost 453739036085
+PASS: test 20 passed with cost 454201734176
+PASS: test 21 passed with cost 454313533693
+PASS: test 22 passed with cost 454259884133
+PASS: test 23 passed with cost 453330666388
+PASS: test 24 passed with cost 453864917829
+PASS: test 25 passed with cost 453876443560
+PASS: test 26 passed with cost 453501141892
+PASS: test 27 passed with cost 453616769872
+PASS: test 28 passed with cost 452907760796
+PASS: test 29 passed with cost 453071039688
+PASS: test 30 passed with cost 453779742980
+PASS: test 31 passed with cost 453744131917
+PASS: test 32 passed with cost 453851561150
+PASS: test 33 passed with cost 453821510163
+PASS: test 34 passed with cost 454473799800
+PASS: test 35 passed with cost 453650318133
+PASS: test 36 passed with cost 453259262241
+PASS: test 37 passed with cost 453949069314
+PASS: test 38 passed with cost 454493709665
+PASS: test 39 passed with cost 453531355865
+PASS: test 40 passed with cost 453068961622
+PASS: test 41 passed with cost 454132615717
+PASS: test 42 passed with cost 453891410659
+PASS: test 43 passed with cost 453284517223
+PASS: test 44 passed with cost 453749326320
+PASS: test 45 passed with cost 453873771341
+PASS: test 46 passed with cost 453548083438
+PASS: test 47 passed with cost 454573488442
+PASS: test 48 passed with cost 453883630373
+PASS: test 49 passed with cost 453623160252
+PASS: test 50 passed with cost 453905129641
+PASS: test 51 passed with cost 453519842840
+PASS: test 52 passed with cost 453770962623
+PASS: test 53 passed with cost 453707474209
+PASS: test 54 passed with cost 454150076153
+PASS: test 55 passed with cost 454246103597
+PASS: test 56 passed with cost 453336342759
+PASS: test 57 passed with cost 453209006464
+PASS: test 58 passed with cost 454705371474
+PASS: test 59 passed with cost 453242125402
+PASS: test 60 passed with cost 454167282001
+PASS: test 61 passed with cost 454027920095
+PASS: test 62 passed with cost 453299298648
+PASS: test 63 passed with cost 453837542129
+PASS: test 64 passed with cost 453505411185
+PASS: test 65 passed with cost 452802910713
+PASS: test 66 passed with cost 453565497786
+PASS: test 67 passed with cost 453332261075
+PASS: test 68 passed with cost 453082202046
+PASS: test 69 passed with cost 453122629255
+PASS: test 70 passed with cost 454148962093
+PASS: test 71 passed with cost 453679512155
+PASS: test 72 passed with cost 453496269824
+PASS: test 73 passed with cost 453390119974
+PASS: test 74 passed with cost 453410263491
+PASS: test 75 passed with cost 453625380686
+PASS: test 76 passed with cost 454261146038
+PASS: test 77 passed with cost 453781716626
+PASS: test 78 passed with cost 453368782517
+PASS: test 79 passed with cost 453796990193
+PASS: test 80 passed with cost 453412912948
+PASS: test 81 passed with cost 454133404057
+PASS: test 82 passed with cost 453464822200
+PASS: test 83 passed with cost 453375564540
+PASS: test 84 passed with cost 454708062250
+PASS: test 85 passed with cost 453963145855
+PASS: test 86 passed with cost 453685101986
+PASS: test 87 passed with cost 453570714012
+PASS: test 88 passed with cost 453359877688
+PASS: test 89 passed with cost 453331931466
+PASS: test 90 passed with cost 453799690356
+PASS: test 91 passed with cost 453396331968
+PASS: test 92 passed with cost 453638859972
+PASS: test 93 passed with cost 453316661691
+PASS: test 94 passed with cost 453660773815
+PASS: test 95 passed with cost 453876392615
+PASS: test 96 passed with cost 453481453055
+PASS: test 97 passed with cost 453535370850
+PASS: test 98 passed with cost 454065643232
+PASS: test 99 passed with cost 453326666712
+PASS: test 100 passed with cost 453975391535
+passed 100 of 100 tests
+
+total cost: 45371130995225 (4.54e+13)
+basic operation counts:
+    add:5.17e+07, sub:1.45e+08, mul:1.04e+08, div:6.22e+07
+basic operation costs:
+    add:5.58e+09, sub:7.98e+10, mul:2.36e+12, div:4.29e+13
+routine counts:
+    gcd:1.00e+05, p_gcd:1.00e+05, reduce_form:8.38e+04
+routine costs (percent of total):
+    gcd:2.49e+13 (54.8%), p_gcd:1.96e+13 (43.3%), reduce_form:1.44e+11 (0.3%)
+
